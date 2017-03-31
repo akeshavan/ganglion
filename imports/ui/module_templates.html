@@ -1,59 +1,61 @@
 <template name="base">
 
-    {{> exams}}
-    
-    {{> freesurferOnly}}
-    
-    <!--{{> niiOnly}}-->
+
+    {{> brainmask }}
+
+    {{> wm }}
+
+    {{> aparcaseg }}
+
 
 </template>
 
-<template name="exams">
 
-<h1 id="exams">Exams</h1>
-    <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
-      Toggle Calendar
-    </button>
-    <br>
-    <br>
-    <div class="collapse in" id="collapseExample" aria-labelledby="collapseExample">
-        <div id="d3vis_date" data-intro="Step 2: Click on a date to show exams from a particular day" data-step="2"></div>
+<template name="brainmask">
+
+<h1 id="Brainmask">Brainmask</h1>
+
+
+
+    <div id="brainmask_table">
+
+        {{> tabular table=TabularTables.brainmask selector=selector class="table table-striped table-bordered table-condensed"}}
+
     </div>
 
-    <div id="exam_table" data-intro="To filter by any of the columns, click a value in the column">
-        
-        {{> tabular table=TabularTables.demographic selector=selector class="table table-striped table-bordered table-condensed"}}
-        
+</template>
+
+
+<template name="wm">
+
+<h1 id="White Matter">White Matter</h1>
+
+
+
+    <div id="wm_table">
+
+        {{> tabular table=TabularTables.wm selector=selector class="table table-striped table-bordered table-condensed"}}
+
     </div>
-    
-</template>
-
-<template name="freesurferOnly">
-
- <div id="freesurfer">
-  <h1>Freesurfer</h1></div>
- <br>
-  <br>
-    Selected Metric: {{currentMetric}}
-  <div class="d3board" data-intro="Click and drag on the histogram to filter data by a freesurfer regional volume"><!-- height="150px" width="600px">-->
-      
-        <svg id="d3vis_freesurfer"></svg>
-
-  </div>
-
-    <select id="metric-select-freesurfer" class="form-control" data-intro="Change the freesurfer metric here">
-    <option disabled="disabled" selected="selected" >Please Select</option>
-    {{#each metric}}
-        <option value="{{this}}">{{this}}</option>
-    {{/each}}
-</select>
-
-  <br><br>
-  <div id="fs_table">
-    {{> tabular table=TabularTables.freesurfer selector=selector class="table table-striped table-bordered table-condensed"}}
-  </div>
 
 </template>
+
+
+<template name="aparcaseg">
+
+<h1 id="Segmentation">Segmentation</h1>
+
+
+
+    <div id="aparcaseg_table">
+
+        {{> tabular table=TabularTables.aparcaseg selector=selector class="table table-striped table-bordered table-condensed"}}
+
+    </div>
+
+</template>
+
+
 
 <template name="body_sidebar">
 
@@ -61,18 +63,29 @@
             <div class="bs-docs-sidebar">
 
                     <ul class="nav nav-list bs-docs-sidenav affix">
-                        <li><a href="#exams"><span class="badge badge-inverse"></span> Exams</a></li>
-                        <li><a href="#freesurfer"><span class="badge badge-inverse"></span> Freesurfer</a></li>
+                        
+                        <li><a href="#Brainmask">
+                            <span class="badge badge-inverse"></span> Brainmask</a>
+                        </li>
+                        
+                        <li><a href="#White Matter">
+                            <span class="badge badge-inverse"></span> White Matter</a>
+                        </li>
+                        
+                        <li><a href="#Segmentation">
+                            <span class="badge badge-inverse"></span> Segmentation</a>
+                        </li>
+                        
                     </ul>
 
                  <ul class="nav nav-list affix qbox">
                  <h5>Query Box</h5>
 
-  <button class="btn btn-default btn-small reset" data-intro="Step 4: You can also click reset to remove all filters" data-step="4" data-position="right"> Reset </button>
+  <button class="btn btn-default btn-small reset"> Reset </button>
                      <br><br>
 
 
-                 <div class="well" data-step="3" data-intro="Step 3: After selecting a date, a query parameter appears. Click the x to remove the filter">
+                 <div class="well">
 
                      {{#each currentSelector}}
                     <span class="tag label label-info">
@@ -96,7 +109,7 @@
                 {{#each savedQueries}}
 
                     <span class="tag label label-primary">
-                      <span class="query {{name}}">{{name}}</span>
+                      <span class="query ">{{name}}</span>
                         <a><i class="removequery glyphicon glyphicon-trash glyphicon-white"></i></a>
                     </span>
 
@@ -110,5 +123,3 @@
         </div>
 
 </template>
-
-

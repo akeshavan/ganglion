@@ -1,36 +1,11 @@
+
 {"start_tag":"{{",
   "end_tag":"}}",
   "startup_json":"https://dl.dropboxusercontent.com/s/vnohn5nh9ho3j8a/data_rf.json?dl=0",
   "modules": [
-  {"name": "Exams",
-    "entry_type": "demographic",
-  "fields": [
-    {"function_name": "get_filter_field",
-      "id": "msid",
-      "name": "msid"
-    },
-    {"function_name": "get_filter_field",
-      "id": "subject_id",
-      "name": "Exam ID"
-    },
-    {"function_name": "get_filter_field",
-      "id": "Study Tag",
-      "name": "Study Tag"
-    },
-    {"function_name": "get_filter_field",
-      "id": "DCM_InstitutionName",
-      "name": "Site"
-    },
-    {"function_name": "get_filter_field",
-      "id": "metrics.DCM_InstitutionName",
-      "name": "Date"
-    }
-  ],
-  "graph_type":"datehist",
-  "showgraph": true},
-    {
-      "name": "Freesurfer",
-      "entry_type": "freesurfer",
+ {
+      "name": "Brainmask",
+      "entry_type": "brainmask",
       "fields": [
         {
           "function_name": "get_filter_field",
@@ -63,7 +38,109 @@
           "name": "Notes"
         }
       ],
-      "graph_type": "histogram",
+      "graph_type": null,
+      "colormaps": {
+        "0":{"name": "Grayscale",
+            "alpha": 1,
+            "min": 0,
+            "max": 255
+        },
+        "1": {
+          "name": "Red Overlay",
+          "alpha": 0.2,
+          "min": 0,
+          "max": 2000
+        }
+      },
+      "staticURL": "http://localhost:3002/",
+      "usePeerJS": true
+    },
+{
+      "name": "White Matter",
+      "entry_type": "wm",
+      "fields": [
+        {
+          "function_name": "get_filter_field",
+          "id": "subject_id",
+          "name": "Exam ID"
+        },
+        {
+          "function_name": "get_qc_viewer",
+          "id": "name",
+          "name": "Freesurfer ID"
+        },
+        {
+          "function_name": "get_qc_filter_field",
+          "id": "quality_check.QC",
+          "name": "QC"
+        },
+        {
+          "function_name": "get_filter_field",
+          "id": "checkedBy",
+          "name": "checked by"
+        },
+        {
+          "function_name": "get_filter_field",
+          "id": "quality_check.user_assign",
+          "name": "Assigned To"
+        },
+        {
+          "function_name": null,
+          "id": "quality_check.notes_QC",
+          "name": "Notes"
+        }
+      ],
+      "graph_type": null,
+      "colormaps": {
+        "0":{"name": "Grayscale",
+            "alpha": 1,
+            "min": 0,
+            "max": 255
+        },
+        "1": {
+          "name": "Spectrum",
+          "alpha": 0.5
+        }
+      },
+      "staticURL": "http://localhost:3002/",
+      "usePeerJS": true
+    },
+{
+      "name": "Segmentation",
+      "entry_type": "aparcaseg",
+      "fields": [
+        {
+          "function_name": "get_filter_field",
+          "id": "subject_id",
+          "name": "Exam ID"
+        },
+        {
+          "function_name": "get_qc_viewer",
+          "id": "name",
+          "name": "Freesurfer ID"
+        },
+        {
+          "function_name": "get_qc_filter_field",
+          "id": "quality_check.QC",
+          "name": "QC"
+        },
+        {
+          "function_name": "get_filter_field",
+          "id": "checkedBy",
+          "name": "checked by"
+        },
+        {
+          "function_name": "get_filter_field",
+          "id": "quality_check.user_assign",
+          "name": "Assigned To"
+        },
+        {
+          "function_name": null,
+          "id": "quality_check.notes_QC",
+          "name": "Notes"
+        }
+      ],
+      "graph_type": null,
       "colormaps": {
         "0":{"name": "Grayscale",
             "alpha": 1,
@@ -75,7 +152,7 @@
           "alpha": 0.5
         }
       },
-      "staticURL": "https://dl.dropboxusercontent.com/u/9020198/data/",
+      "staticURL": "http://localhost:3002/",
       "usePeerJS": true
     }
 ]}

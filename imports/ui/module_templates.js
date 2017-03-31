@@ -75,50 +75,88 @@ render_histogram = function(entry_type){
                 }
 }
 
-Template.exams.rendered = function() {
+
+
+Template.brainmask.rendered = function() {
 
       if (!this.rendered){
         this.rendered = true
          }
 
 
-      this.autorun(function() {
-          Meteor.call("getDateHist", function(error, result){
-              do_d3_date_histogram(result, "#d3vis_date")
-              })
+    
 
-      })
   }
 
-Template.exams.helpers({selector: function(){return get_filter("demographic")}})
 
-Template.freesurferOnly.rendered = function(){
 
-        if (!this.rendered){
-            this.rendered = true
-        }
 
-            this.autorun(function() {
-                render_histogram("freesurfer")
 
-            }); //end autorun
+Template.wm.rendered = function() {
 
-        }
+      if (!this.rendered){
+        this.rendered = true
+         }
 
-Template.freesurferOnly.events({
-    "change #metric-select-freesurfer": function(event, template){
-        var metric = $(event.currentTarget).val()
-        console.log("metric: ", metric)
-        Session.set("current_freesurfer", metric)
-    }
+
+    
+
+  }
+
+
+
+
+
+Template.aparcaseg.rendered = function() {
+
+      if (!this.rendered){
+        this.rendered = true
+         }
+
+
+    
+
+  }
+
+
+
+
+
+
+
+Template.brainmask.helpers({
+
+selector: function(){return get_filter("brainmask")},
+
+
+
 })
 
-Template.freesurferOnly.helpers({
-    selector: function(){return get_filter("freesurfer")},
-    metric: function(){
-        return get_metrics("freesurfer")
-    },
-    currentMetric: function(){
-        return Session.get("current_freesurfer")
-    }
-    })
+
+
+Template.wm.helpers({
+
+selector: function(){return get_filter("wm")},
+
+
+
+})
+
+
+
+Template.aparcaseg.helpers({
+
+selector: function(){return get_filter("aparcaseg")},
+
+
+
+})
+
+
+
+
+  
+
+  
+
+  

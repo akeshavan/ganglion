@@ -708,6 +708,7 @@ Template.view_images.events({
      console.log("in resize")
      var viewer = papayaContainers[0].viewer
      viewer.resizeViewer(papayaContainers[0].getViewerDimensions())
+     papayaContainers[0].resizeViewerComponents(true);
 
  },
  "click #addNewDrawing": function(e, template){
