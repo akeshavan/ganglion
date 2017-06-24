@@ -1,0 +1,159 @@
+{
+  "public": {
+    "startup_json":"http://localhost:8080/all_entries.json",
+    "load_if_empty": true,
+    "modules": [
+    {
+        "name": "Brainmask",
+        "entry_type": "brainmask",
+        "fields": [
+          {
+            "function_name": "get_filter_field",
+            "id": "subject_id",
+            "name": "Exam ID"
+          },
+          {
+            "function_name": "get_qc_viewer",
+            "id": "name",
+            "name": "Freesurfer ID"
+          },
+          {
+            "function_name": "get_qc_filter_field",
+            "id": "quality_check.QC",
+            "name": "QC"
+          },
+          {
+            "function_name": "get_filter_field",
+            "id": "checkedBy",
+            "name": "checked by"
+          },
+          {
+            "function_name": "get_filter_field",
+            "id": "quality_check.user_assign",
+            "name": "Assigned To"
+          },
+          {
+            "function_name": null,
+            "id": "quality_check.notes_QC",
+            "name": "Notes"
+          }
+        ],
+        "graph_type": "histogram",
+        "colormaps": {
+          "0":{"name": "Grayscale",
+              "alpha": 1,
+              "min": 0,
+              "max": 255
+          },
+          "1": {
+            "name": "Red Overlay",
+            "alpha": 0.2,
+            "min": 0,
+            "max": 2000
+          }
+        },
+        "staticURL": "http://localhost:8080/",
+        "usePeerJS": true
+      },
+  {
+        "name": "White Matter",
+        "entry_type": "wm",
+        "fields": [
+          {
+            "function_name": "get_filter_field",
+            "id": "subject_id",
+            "name": "Exam ID"
+          },
+          {
+            "function_name": "get_qc_viewer",
+            "id": "name",
+            "name": "Freesurfer ID"
+          },
+          {
+            "function_name": "get_qc_filter_field",
+            "id": "quality_check.QC",
+            "name": "QC"
+          },
+          {
+            "function_name": "get_filter_field",
+            "id": "checkedBy",
+            "name": "checked by"
+          },
+          {
+            "function_name": "get_filter_field",
+            "id": "quality_check.user_assign",
+            "name": "Assigned To"
+          },
+          {
+            "function_name": null,
+            "id": "quality_check.notes_QC",
+            "name": "Notes"
+          }
+        ],
+        "graph_type": "histogram",
+        "colormaps": {
+          "0":{"name": "Grayscale",
+              "alpha": 1,
+              "min": 0,
+              "max": 255
+          },
+          "1": {
+            "name": "Spectrum",
+            "alpha": 0.5
+          }
+        },
+        "staticURL": "http://localhost:8080/",
+        "usePeerJS": true
+      },
+  {
+        "name": "Segmentation",
+        "entry_type": "aparcaseg",
+        "fields": [
+          {
+            "function_name": "get_filter_field",
+            "id": "subject_id",
+            "name": "Exam ID"
+          },
+          {
+            "function_name": "get_qc_viewer",
+            "id": "name",
+            "name": "Freesurfer ID"
+          },
+          {
+            "function_name": "get_qc_filter_field",
+            "id": "quality_check.QC",
+            "name": "QC"
+          },
+          {
+            "function_name": "get_filter_field",
+            "id": "checkedBy",
+            "name": "checked by"
+          },
+          {
+            "function_name": "get_filter_field",
+            "id": "quality_check.user_assign",
+            "name": "Assigned To"
+          },
+          {
+            "function_name": null,
+            "id": "quality_check.notes_QC",
+            "name": "Notes"
+          }
+        ],
+        "graph_type": "histogram",
+        "colormaps": {
+          "0":{"name": "Grayscale",
+              "alpha": 1,
+              "min": 0,
+              "max": 255
+          },
+          "1": {
+            "name": "custom.Freesurfer",
+            "alpha": 0.5
+          }
+        },
+        "staticURL": "http://localhost:8080/",
+        "usePeerJS": true
+      }]
+}
+}

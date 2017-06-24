@@ -1,19 +1,33 @@
 <template name="base">
 
 
-    {{> demographic }}
-
-    {{> freesurfer }}
-
-    {{> test }}
-
+    {{#each modules}}
+      {{> Template.dynamic template="module" data=this}}
+    {{/each}}
 
 </template>
 
+<template name="module">
 
-<template name="demographic">
+  <h1 id="{{this.name}}">{{this.name}}</h1>
 
-<h1 id="Exams">Exams</h1>
+  {{#if histogram}}
+    Selected Metric: {{currentMetric}}
+
+    <div class="d3board">
+       <svg id="d3vis_{{this.entry_type}}"></svg>
+    </div>
+
+    <select id="metric-select" class="form-control">
+    <option disabled="disabled" selected="selected" >Please Select</option>
+    {{#each metric}}
+        <option value="{{this}}">{{this}}</option>
+    {{/each}}
+    </select>
+
+  {{/if}}
+
+  {{#if date_histogram}}
 
     <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
       Toggle Calendar
@@ -21,89 +35,15 @@
     <br>
     <br>
     <div class="collapse in" id="collapseExample" aria-labelledby="collapseExample">
-        <div id="d3vis_date_demographic"></div>
+        <div id="d3vis_date_{{entry_type}}"></div>
     </div>
 
+  {{/if}}
 
+  {{> tabular table=table selector=selector class="table table-striped table-bordered table-condensed"}}
 
-
-    <div id="demographic_table">
-
-        {{> tabular table=TabularTables.demographic selector=selector class="table table-striped table-bordered table-condensed"}}
-
-    </div>
 
 </template>
-
-
-<template name="freesurfer">
-
-<h1 id="Freesurfer">Freesurfer</h1>
-
- <br>
-  <br>
-    Selected Metric: {{currentMetric}}
-  <div class="d3board">
-
-        <svg id="d3vis_freesurfer"></svg>
-
-  </div>
-
-    <select id="metric-select-freesurfer" class="form-control">
-    <option disabled="disabled" selected="selected" >Please Select</option>
-    {{#each metric}}
-        <option value="{{this}}">{{this}}</option>
-    {{/each}}
-</select>
-
-  <br><br>
-
-
-
-
-    <div id="freesurfer_table">
-
-        {{> tabular table=TabularTables.freesurfer selector=selector class="table table-striped table-bordered table-condensed"}}
-
-    </div>
-
-</template>
-
-
-<template name="test">
-
-<h1 id="Test">Test</h1>
-
- <br>
-  <br>
-    Selected Metric: {{currentMetric}}
-  <div class="d3board">
-
-        <svg id="d3vis_test"></svg>
-
-  </div>
-
-    <select id="metric-select-test" class="form-control">
-    <option disabled="disabled" selected="selected" >Please Select</option>
-    {{#each metric}}
-        <option value="{{this}}">{{this}}</option>
-    {{/each}}
-</select>
-
-  <br><br>
-
-
-
-
-    <div id="test_table">
-
-        {{> tabular table=TabularTables.test selector=selector class="table table-striped table-bordered table-condensed"}}
-
-    </div>
-
-</template>
-
-
 
 <template name="body_sidebar">
 
@@ -111,19 +51,13 @@
             <div class="bs-docs-sidebar">
 
                     <ul class="nav nav-list bs-docs-sidenav affix">
-                        
-                        <li><a href="#Exams">
-                            <span class="badge badge-inverse"></span> Exams</a>
+
+                      {{#each modules}}
+                        <li><a href="#{{this.name}}">
+                            <span class="badge badge-inverse"></span> {{this.name}}</a>
                         </li>
-                        
-                        <li><a href="#Freesurfer">
-                            <span class="badge badge-inverse"></span> Freesurfer</a>
-                        </li>
-                        
-                        <li><a href="#Test">
-                            <span class="badge badge-inverse"></span> Test</a>
-                        </li>
-                        
+                      {{/each}}
+
                     </ul>
 
                  <ul class="nav nav-list affix qbox">

@@ -48,7 +48,6 @@ render_histogram = function(entry_type){
                 var metric = Session.get("current_"+entry_type)//"Amygdala"
                 if (metric == null){
                     var all_metrics = Session.get(entry_type+"_metrics")
-
                     if (all_metrics != null){
                         Session.set("current_"+entry_type, all_metrics[0])
                     }
@@ -59,7 +58,7 @@ render_histogram = function(entry_type){
                     var filter = get_filter(entry_type)
                     //console.log("filter is", filter)
                     Meteor.call("getHistogramData", entry_type, metric, 20, filter, function(error, result){
-                    //console.log("result is", result)
+
                     var data = result["histogram"]
                     var minval = result["minval"]
                     var maxval = result["maxval"]
@@ -76,143 +75,65 @@ render_histogram = function(entry_type){
 }
 
 
+Template.base.helpers({
+  modules: function(){
+    console.log(Meteor.settings.public.modules)
+    return Meteor.settings.public.modules
+  }
+})
 
-Template.demographic.rendered = function() {
+Template.module.helpers({
+  selector: function(){
+    return get_filter(this.entry_type)
+  },
+  table: function(){
+    return TabularTables[this.entry_type]
+  },
+  histogram: function(){
+    return this.graph_type == "histogram"
+  },
+  date_histogram: function(){
+    return this.graph_type == "datehist"
+  },
+  metric: function(){
+          return get_metrics(this.entry_type)
+      },
+  currentMetric: function(){
+          return Session.get("current_"+this.entry_type)
+      }
+})
 
-      if (!this.rendered){
-        this.rendered = true
-         }
+Template.module.events({
+ "change #metric-select": function(event, template){
+     var metric = $(event.currentTarget).val()
+     console.log("metric: ", metric)
+     Session.set("current_"+this.entry_type, metric)
+ }
+})
 
+Template.base.rendered = function(){
+  if (!this.rendered){
+      this.rendered = true
+  }
 
-    
-      this.autorun(function() {
+  this.autorun(function() {
+      Meteor.settings.public.modules.forEach(function(self, idx, arr){
+        if (self.graph_type == "histogram"){
+          console.log("rendering histogram", self.entry_type)
+          render_histogram(self.entry_type)
+        }
+        else if (self.graph_type == "datehist") {
           Meteor.call("getDateHist", function(error, result){
-              do_d3_date_histogram(result, "#d3vis_date_demographic")
+              do_d3_date_histogram(result, "#d3vis_date_"+self.entry_type)
               })
-
+        }
       })
+  });
+}
 
-     
 
+Template.body_sidebar.helpers({
+  modules: function(){
+    return Meteor.settings.public.modules
   }
-
-
-
-
-
-Template.freesurfer.rendered = function() {
-
-      if (!this.rendered){
-        this.rendered = true
-         }
-
-
-    
-
-       this.autorun(function() {
-                render_histogram("freesurfer")
-
-       }); //end autorun
-
-     
-
-  }
-
-
-
-
-
-Template.test.rendered = function() {
-
-      if (!this.rendered){
-        this.rendered = true
-         }
-
-
-    
-
-       this.autorun(function() {
-                render_histogram("test")
-
-       }); //end autorun
-
-     
-
-  }
-
-
-
-
-
-
-
-Template.demographic.helpers({
-
-selector: function(){return get_filter("demographic")},
-
-
-
 })
-
-
-
-Template.freesurfer.helpers({
-
-selector: function(){return get_filter("freesurfer")},
-
-
-
-metric: function(){
-        return get_metrics("freesurfer")
-    },
-currentMetric: function(){
-        return Session.get("current_freesurfer")
-    }
-
-
-
-})
-
-
-
-Template.test.helpers({
-
-selector: function(){return get_filter("test")},
-
-
-
-metric: function(){
-        return get_metrics("test")
-    },
-currentMetric: function(){
-        return Session.get("current_test")
-    }
-
-
-
-})
-
-
-
-
-  
-
-  
-   Template.freesurfer.events({
-    "change #metric-select-freesurfer": function(event, template){
-        var metric = $(event.currentTarget).val()
-        console.log("metric: ", metric)
-        Session.set("current_freesurfer", metric)
-    }
-   })
-  
-
-  
-   Template.test.events({
-    "change #metric-select-test": function(event, template){
-        var metric = $(event.currentTarget).val()
-        console.log("metric: ", metric)
-        Session.set("current_test", metric)
-    }
-   })
-  
