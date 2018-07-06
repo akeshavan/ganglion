@@ -1,2 +1,5 @@
 node_modules/
 .meteor/dev_bundle
+.mindcontrol/
+imports/docker/log/
+imports/docker/temp_for_nginx/

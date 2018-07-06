@@ -1,0 +1,2 @@
+2018/07/03 15:00:10 [info] 7#7: *1 no user/password was provided for basic authentication, client: 172.17.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:3002"
+2018/07/03 15:00:11 [info] 7#7: *1 no user/password was provided for basic authentication, client: 172.17.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:3002"
