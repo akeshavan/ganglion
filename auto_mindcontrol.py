@@ -8,9 +8,9 @@ import os
 import shutil
 
 parser = argparse.ArgumentParser(description='Autogenerate mindcontrol settings from a BIDS directory')
-parser.add_argument('--server', action = 'store_true', 
+parser.add_argument('--server', action = 'store_true',
                     help='Start a simple file server in the bids directory.')
-parser.add_argument('--meteor', action = 'store_true', 
+parser.add_argument('--meteor', action = 'store_true',
                     help='Start the meteor server that will serve mindcontrol.')
 parser.add_argument('bids_dir', help='The directory with the input dataset '
                     'formatted according to the BIDS standard.')
@@ -61,7 +61,7 @@ manifest = []
 entry_types = set()
 for img in layout.get(extensions = ".nii.gz"):
     img_dict = {}
-    img_dict["check_masks"] = [img.filename.replace(bids_dir,"")]
+    img_dict["check_masks"] = [os.path.relpath(img.filename, start=bids_dir)]
     entry_types.add(img.type)
     img_dict["entry_type"] = img.type
     img_dict["metrics"] = {}
@@ -87,15 +87,15 @@ pub_set = {"startup_json": file_server+"startup.auto.json",
 settings = {"public": pub_set}
 
 # Write out file list to bids directory
-with open(os.path.join(bids_dir,"startup.auto.json"), "w") as h:
-    json.dump(manifest,h)
+with open(os.path.join(bids_dir, "startup.auto.json"), "w") as h:
+    json.dump(manifest, h)
 # Write out the settings file to the mindcontrol directory
 with open("settings.auto.json", "w") as h:
-    json.dump(settings,h)
+    json.dump(settings, h)
 
 if args.server:
-    shutil.copy2("start_static_server.py",bids_dir)
-    subprocess.Popen("python start_static_server.py", cwd = bids_dir, shell = True)
+    shutil.copy2("start_static_server.py", bids_dir)
+    subprocess.Popen("python start_static_server.py", cwd=bids_dir, shell=True)
 if args.meteor:
     meteor = subprocess.Popen("meteor --settings settings.auto.json".split(' '))
     meteor.wait()
