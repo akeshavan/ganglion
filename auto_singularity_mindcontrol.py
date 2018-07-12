@@ -314,7 +314,7 @@ def write_mcsettings(mcsetfile, entry_types=None, freesurfer=False, startup_port
           "max": 2000
         }
         },
-          'ribbon': 
+          'wm':
                  {
                      "0":{"name": "Grayscale",
                           "alpha": 1,
