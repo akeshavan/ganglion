@@ -42,6 +42,7 @@ def parse_stats(subjects_dir, subject):
                             "SubCortGray",
                             "Cortex",
                             "CerebralWhiteMatter",
+                            "CorticalWhiteMatter",
                             "CorticalWhiteMatterVol"]
             value_labels = list(map(lambda x: 'Measure ' + x + ',', value_labels))
             output = pd.DataFrame()
@@ -119,6 +120,8 @@ def create_mindcontrol_entries(mindcontrol_base_dir, output_dir, subject, stats,
     cortical_wm = "CerebralWhiteMatterVol" # for later FS version
     if not stats.get(cortical_wm):
         cortical_wm = "CorticalWhiteMatterVol"
+        if not stats.get(cortical_wm):
+            cortical_wm = "CorticalWhiteMatter"
 
     metric_split = {"brainmask": ["eTIV", "CortexVol", "TotalGrayVol"],
                     "wm": [cortical_wm, "WM-hypointensities",
@@ -165,6 +168,8 @@ if __name__ == "__main__":
     parser.add_argument('--nipype_plugin',
                         help="Run the mgz to nii.gz conversion with the specified nipype plugin."
                         "see https://nipype.readthedocs.io/en/latest/users/plugins.html")
+    parser.add_argument('--nipype_plugin_args',
+                        help='json formatted string of keyword arguments for nipype_plugin')
 
     args = parser.parse_args()
     if args.bids_dir is not None:
@@ -186,6 +191,10 @@ if __name__ == "__main__":
 
     no_server = args.no_server
     nipype_plugin = args.nipype_plugin
+    if args.nipype_plugin_args is not None:
+        nipype_plugin_args = json.loads(args.nipype_plugin_args)
+    else:
+        nipype_plugin_args = {}
 
     infofile = mc_singularity_path/'settings/mc_info.json'
     with infofile.open('r') as h:
@@ -219,7 +228,7 @@ if __name__ == "__main__":
         for path in freesurfer_dir.glob('*'):
             subject = path.parts[-1]
             # check if mri dir exists, and don't add fsaverage
-            if os.path.exists(os.path.join(path, 'mri')) and subject != 'fsaverage':
+            if os.path.exists(os.path.join(path, 'mri')) and 'average' not in subject:
                 subjects.append(subject)
 
         volumes = ["brainmask.mgz", "wm.mgz", "aparc+aseg.mgz", "T1.mgz", "ribbon.mgz"]
@@ -285,7 +294,7 @@ if __name__ == "__main__":
         wf.connect(mriconvert_node,'out_file', datasink_node, 'out_file')
         wf.connect(write_mindcontrol_entries, "output_json", datasink_node, "out_file.@json")
         #wf.write_graph(graph2use='exec')
-        wf.run(plugin=nipype_plugin)
+        wf.run(plugin=nipype_plugin, plugin_args=nipype_plugin_args)
 
     if not args.no_server:
         cmd = f"singularity run -B ${{PWD}}/log:/var/log/nginx -B {bids_dir}:/mc_data" \
