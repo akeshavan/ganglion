@@ -213,81 +213,82 @@ def write_mcsettings(mcsetfile, entry_types=None, freesurfer=False, startup_port
     """
     file_server = f"http://localhost:{nginx_port}/files/"
     startup_file_server = f'http://localhost:{startup_port}/'
-    
+
     default_module = {
-    "fields": [
-      {
-        "function_name": "get_qc_viewer",
-        "id": "name",
-        "name": "Image File"
-      },
-      {
-        "function_name": "get_qc_ave_field",
-        "id": "average_vote",
-        "name": "QC vote"
-      },
-      {
-        "function_name": None,
-        "id": "num_votes",
-        "name": "# votes"
-      },
-      {
-        "function_name": None,
-        "id": "quality_check.notes_QC",
-        "name": "Notes"
-      }
-    ],
-    "metric_names": None,
-    "graph_type": None,
-    "staticURL": file_server,
-    "usePeerJS": False,
-    "logPainter": False,
-    "logContours": False,
-    "logPoints": True,
-    "qc_options": {"pass": 1, "fail": 1, "needs_edits": 0, "edited": 0, "assignTo": 0, "notes": 1, "confidence": 1}}
-    
+                      "fields": [
+                        {
+                          "function_name": "get_qc_viewer",
+                          "id": "name",
+                          "name": "Image File"
+                        },
+                        {
+                          "function_name": "get_qc_ave_field",
+                          "id": "average_vote",
+                          "name": "QC vote"
+                        },
+                        {
+                          "function_name": None,
+                          "id": "num_votes",
+                          "name": "# votes"
+                        },
+                        {
+                          "function_name": None,
+                          "id": "quality_check.notes_QC",
+                          "name": "Notes"
+                        }
+                      ],
+                      "metric_names": None,
+                      "graph_type": None,
+                      "staticURL": file_server,
+                      "usePeerJS": False,
+                      "logPainter": False,
+                      "logContours": False,
+                      "logPoints": True,
+                      "qc_options": {"pass": 1, "fail": 1, "needs_edits": 0, "edited": 0, "assignTo": 0, "notes": 1, "confidence": 1}
+                      }
+
     fs_module = {
-    "fields": [
-              {
-                "function_name": "get_filter_field",
-                "id": "subject",
-                "name": "Exam ID"
-              },
-              {
-                "function_name": "get_qc_viewer",
-                "id": "name",
-                "name": "Freesurfer ID"
-              },
-              {
-                "function_name": "get_qc_filter_field",
-                "id": "quality_check.QC",
-                "name": "QC"
-              },
-              {
-                "function_name": "get_filter_field",
-                "id": "checkedBy",
-                "name": "checked by"
-              },
-              {
-                "function_name": "get_filter_field",
-                "id": "quality_check.user_assign",
-                "name": "Assigned To"
-              },
-              {
-                "function_name": None,
-                "id": "quality_check.notes_QC",
-                "name": "Notes"
-              }
-              ],
-    "metric_names": None,
-    "graph_type": None,
-    "staticURL": file_server,
-    "usePeerJS": False,
-    "logPainter": False,
-    "logContours": False,
-    "logPoints": True
-    }
-    
+                 "fields": [
+                           {
+                             "function_name": "get_filter_field",
+                             "id": "subject",
+                             "name": "Exam ID"
+                           },
+                           {
+                             "function_name": "get_qc_viewer",
+                             "id": "name",
+                             "name": "Freesurfer ID"
+                           },
+                           {
+                             "function_name": "get_qc_filter_field",
+                             "id": "quality_check.QC",
+                             "name": "QC"
+                           },
+                           {
+                             "function_name": "get_filter_field",
+                             "id": "checkedBy",
+                             "name": "checked by"
+                           },
+                           {
+                             "function_name": "get_filter_field",
+                             "id": "quality_check.user_assign",
+                             "name": "Assigned To"
+                           },
+                           {
+                             "function_name": None,
+                             "id": "quality_check.notes_QC",
+                             "name": "Notes"
+                           }
+                           ],
+                 "metric_names": None,
+                 "graph_type": "histogram",
+                 "staticURL": file_server,
+                 "usePeerJS": False,
+                 "logPainter": False,
+                 "logContours": False,
+                 "logPoints": True
+                 }
+
     fs_cm_dict = {'aparcaseg': 
            {
                "0":{"name": "Grayscale",
@@ -341,7 +342,7 @@ def write_mcsettings(mcsetfile, entry_types=None, freesurfer=False, startup_port
                     }
     if entry_types is None and not freesurfer:
         raise Exception("You must either define entry types or have freesurfer == True")
-    
+
     modules = []
     if entry_types is not None:
         for et in entry_types:
@@ -349,9 +350,9 @@ def write_mcsettings(mcsetfile, entry_types=None, freesurfer=False, startup_port
             et_module["name"] = et
             et_module["entry_type"] = et
             modules.append(et_module)
-    
+
     if freesurfer:
-        for et,cm in fs_cm_dict.items():
+        for et, cm in fs_cm_dict.items():
             et_module = fs_module.copy()
             et_module["name"] = fs_name_dict[et]
             et_module["entry_type"] = et
@@ -359,7 +360,6 @@ def write_mcsettings(mcsetfile, entry_types=None, freesurfer=False, startup_port
             et_module['colormaps'] = cm
             modules.append(et_module)
 
-        
     # autogenerated settings files
     pub_set = {"startup_json": startup_file_server+"startup.json",
                "load_if_empty": True,
@@ -368,7 +368,7 @@ def write_mcsettings(mcsetfile, entry_types=None, freesurfer=False, startup_port
                "modules": modules}
     settings = {"public": pub_set}
     with mcsetfile.open("w") as h:
-        json.dump(settings,h)
+        json.dump(settings, h)
 
 if __name__ == "__main__":
     docker_build_path = Path(__file__).resolve().parent / 'imports/docker'
@@ -380,7 +380,7 @@ if __name__ == "__main__":
                         help='Directory to bulid singularirty image and files in.')
     parser.add_argument('--custom_settings',
                         help='Path to custom settings json')
-    parser.add_argument('--freesurfer', action='store_true', 
+    parser.add_argument('--freesurfer', action='store_true',
                         help='Generate settings for freesurfer QC in mindcontrol.')
     parser.add_argument('--entry_type', action='append',
                         help='Name of mindcontrol module you would like to have autogenerated.'
@@ -455,7 +455,7 @@ if __name__ == "__main__":
     # Write settings files
     write_passfile(passfile)
     write_nginxconf(ncfile)
-    write_meteorconf(mcfile, startup_port=startup_port, 
+    write_meteorconf(mcfile, startup_port=startup_port,
                      nginx_port=nginx_port, meteor_port=meteor_port)
     if custom_settings is not None:
         copyfile(custom_settings, mcsetfile.as_posix())
