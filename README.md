@@ -41,12 +41,13 @@ Clone this repository
 
 ```
 git clone https://github.com/Shotgunosine/mindcontrol
+cd mindcontrol
 git checkout hpc_compat
 ```
 
 Run auto_singularity_mindcontrol.py. You can see its documentation with `python auto_singularity_mindcontrol.py -h`.
 ```
-python3 mindcontrol/auto_singularity_mindcontrol.py --sing_out_dir ~/mc_sing --freesurfer
+python3 auto_singularity_mindcontrol.py --sing_out_dir ~/mc_sing --freesurfer
 ```
 
 Copy the directory produced to the system you want to run mindcontrol on. For example, a node on the cluster where your data is already located. 
