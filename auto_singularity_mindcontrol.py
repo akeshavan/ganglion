@@ -5,7 +5,6 @@ import json
 from shutil import copyfile
 import os
 import getpass
-from passlib.hash import bcrypt
 import subprocess
 import random
 import sys
@@ -79,7 +78,7 @@ class HtpasswdFile:
 
 def write_passfile(passfile_path):
     """Collects usernames and passwords and writes them to
-    the provided path with bcrypt encryption.
+    the provided path with encryption.
     Parameters
     ----------
     passfile: pathlib.Path object
@@ -338,7 +337,7 @@ def write_mcsettings(mcsetfile, entry_types=None, freesurfer=False, startup_port
           }
     fs_name_dict = {'brainmask': 'Brain Mask',
                     'aparcaseg': 'Segmentation',
-                    'ribbon': 'White Matter',
+                    'wm': 'White Matter',
                     }
     if entry_types is None and not freesurfer:
         raise Exception("You must either define entry types or have freesurfer == True")
