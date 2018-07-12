@@ -162,6 +162,9 @@ if __name__ == "__main__":
                              "singularity image and settings files.")
     parser.add_argument('--no_server', action='store_true',
                         help="Don't start the mindcontrol server, just generate the manifest")
+    parser.add_argument('--nipype_plugin',
+                        help="Run the mgz to nii.gz conversion with the specified nipype plugin."
+                        "see https://nipype.readthedocs.io/en/latest/users/plugins.html")
 
     args = parser.parse_args()
     if args.bids_dir is not None:
@@ -182,6 +185,7 @@ if __name__ == "__main__":
     mc_singularity_path = Path(args.mc_singularity_path)
 
     no_server = args.no_server
+    nipype_plugin = args.nipype_plugin
 
     infofile = mc_singularity_path/'settings/mc_info.json'
     with infofile.open('r') as h:
@@ -281,7 +285,7 @@ if __name__ == "__main__":
         wf.connect(mriconvert_node,'out_file', datasink_node, 'out_file')
         wf.connect(write_mindcontrol_entries, "output_json", datasink_node, "out_file.@json")
         #wf.write_graph(graph2use='exec')
-        wf.run()
+        wf.run(plugin=nipype_plugin)
 
     if not args.no_server:
         cmd = f"singularity run -B ${{PWD}}/log:/var/log/nginx -B {bids_dir}:/mc_data" \
