@@ -127,7 +127,7 @@ def create_mindcontrol_entries(mindcontrol_base_dir, output_dir, subject, stats,
 
     volumes = {'aparcaseg': ['T1.nii.gz', 'aparc+aseg.nii.gz'],
                'brainmask': ['T1.nii.gz', 'brainmask.nii.gz'],
-               'ribbon': ['T1.nii.gz', 'ribbon.nii.gz', 'wm.nii.gz']}
+               'wm': ['T1.nii.gz', 'ribbon.nii.gz', 'wm.nii.gz']}
 
     all_entries = []
 
@@ -166,7 +166,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.bids_dir is not None:
         bids_dir = Path(args.bids_dir)
-        layout = BIDSLayout(bids_dir)
+        try:
+            layout = BIDSLayout(bids_dir)
+        except ValueError as e:
+            print("Invalid bids directory, skipping none freesurfer files. BIDS error:", e)
 
     else:
         bids_dir = None
@@ -186,7 +189,6 @@ if __name__ == "__main__":
     manifest_dir = mc_singularity_path/'settings/mc_manifest_init/'
     manifest_json = (manifest_dir/'startup.json').resolve()
 
-
     # First create the initial manifest
     manifest = []
     if info['entry_types'] is not None and bids_dir is not None:
@@ -195,7 +197,7 @@ if __name__ == "__main__":
         for img in layout.get(extensions=".nii.gz"):
             if img.type in entry_types:
                 img_dict = {}
-                img_dict["check_masks"] = [img.filename.replace(bids_dir.as_posix(),"")]
+                img_dict["check_masks"] = [img.filename.replace(bids_dir.as_posix(), "")]
                 img_dict["entry_type"] = img.type
                 img_dict["metrics"] = {}
                 img_dict["name"] = os.path.split(img.filename)[1].split('.')[0]
@@ -227,13 +229,13 @@ if __name__ == "__main__":
         input_node.iterables = ("subject_id", subjects)
         input_node.inputs.subjects_dir = freesurfer_dir
         input_node.inputs.mindcontrol_base_dir = bids_dir.as_posix()
-        input_node.inputs.output_dir = freesurfer_dir.as_posix() 
+        input_node.inputs.output_dir = freesurfer_dir.as_posix()
         input_node.inputs.startup_json_path = manifest_json.as_posix()
 
         dg_node = Node(Function(input_names=["subjects_dir", "subject", "volumes"],
                                 output_names=["volume_paths"],
                                 function=data_grabber),
-                     name="datagrab")
+                       name="datagrab")
         #dg_node.inputs.subjects_dir = subjects_dir
         dg_node.inputs.volumes = volumes
 
@@ -251,7 +253,7 @@ if __name__ == "__main__":
                                                                "stats",
                                                                "startup_json_path"],
                                                   output_names=["output_json"],
-                                                  function=create_mindcontrol_entries), 
+                                                  function=create_mindcontrol_entries),
                                          name="get_mindcontrol_entries")
 
         datasink_node = Node(DataSink(),
@@ -276,7 +278,7 @@ if __name__ == "__main__":
         wf.connect(get_stats_node, "output_dict", write_mindcontrol_entries, "stats")
         wf.connect(input_node, "output_dir", datasink_node, "base_directory")
         wf.connect(dg_node,"volume_paths", mriconvert_node, "in_file")
-        wf.connect(mriconvert_node,'out_file', datasink_node,'out_file')
+        wf.connect(mriconvert_node,'out_file', datasink_node, 'out_file')
         wf.connect(write_mindcontrol_entries, "output_json", datasink_node, "out_file.@json")
         #wf.write_graph(graph2use='exec')
         wf.run()
