@@ -40,7 +40,8 @@ First you'll build a singularity container on a system where you've got docker i
 Clone this repository
 
 ```
-git clone https://github.com/akeshavan/mindcontrol
+git clone https://github.com/Shotgunosine/mindcontrol
+git checkout hpc_compat
 ```
 
 Run auto_singularity_mindcontrol.py. You can see its documentation with `python auto_singularity_mindcontrol.py -h`.
