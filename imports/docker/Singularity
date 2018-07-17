@@ -1,0 +1,26 @@
+Bootstrap: docker
+Registry: http://localhost:5000
+Namespace:
+From: mc_services:latest
+
+%labels
+    Mainteiner Dylan Nielson\
+
+%startscript
+    export HOME=/home/`whoami`
+    if [ ! -d  $HOME/mindcontrol ] || [ ! -d $HOME/.meteor ] ||  [ ! -d $HOME/.cordova ] ; then
+        echo "Copying meteor files into singularity_home" > /output/out
+        rsync -ach /home/mindcontrol/mindcontrol $HOME > /output/rsync 2>&1
+        echo "/home/mindcontrol/mindcontrol copied to $HOME" >> /output/out
+        rsync -ach /home/mindcontrol/.meteor $HOME >> /output/rsync 2>&1
+        echo "/home/mindcontrol/.meteor copied to $HOME" >> /output/out
+        rsync -ach /home/mindcontrol/.cordova $HOME >> /output/rsync 2>&1
+        echo "home/mindcontrol/.cordova copied to $HOME" >> /output/out
+    fi
+    ln -s /home/mindcontrol/mindcontrol/.meteor/local $HOME/mindcontrol/.meteor/local/
+    echo "Starting mindcontrol and nginx" >> /output/out
+    cd $HOME/mindcontrol
+    # grab proper meteor port from settings file
+    MC_PORT=$(cat /mc_settings/mc_port)
+    nohup meteor --settings /mc_settings/mc_nginx_settings.json --port $MC_PORT > /output/mindcontrol.out 2>&1 &
+    nginx -g "daemon off;"
