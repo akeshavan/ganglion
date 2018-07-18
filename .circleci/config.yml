@@ -5,6 +5,6 @@ jobs:
     steps:
       - checkout
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker build -t shotgunosine/mindcontrol:$CIRCLE_BUILD_NUM-${CIRCLE_SHA1:0:6} -f Dockerfile_services imports/docker/
+      - run: docker build -t shotgunosine/mindcontrol:$CIRCLE_BUILD_NUM-${CIRCLE_SHA1:0:6} -f imports/docker/Dockerfile_services 
       - run: docker tag shotgunosine/mindcontrol:$CIRCLE_BUILD_NUM-${CIRCLE_SHA1:0:6} shotgunosine/mindcontrol:latest
       - run: docker push shotgunosine/mindcontrol
