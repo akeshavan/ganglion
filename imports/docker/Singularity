@@ -1,7 +1,6 @@
 Bootstrap: docker
-Registry: http://localhost:5000
-Namespace:
-From: mc_services:latest
+Namespace:shotgunosine
+From: mindcontrol:latest
 
 %labels
     Mainteiner Dylan Nielson\
