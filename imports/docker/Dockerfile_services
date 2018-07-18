@@ -1,0 +1,85 @@
+FROM nginx:1.15.1
+
+MAINTAINER Dylan Nielson
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+        ca-certificates \
+        curl \
+        git \
+        vim \
+        supervisor \
+        rsync \
+        procps \
+        && rm -rf /var/lib/apt/lists/*
+
+ENV METEOR_RELEASE 1.7.0.3
+RUN curl  https://install.meteor.com/ 2>/dev/null | sed 's/^RELEASE/#RELEASE/'| RELEASE=$METEOR_RELEASE sh
+
+RUN ln -s ~/.meteor/packages/meteor-tool/*/mt-os.linux.x86_64/dev_bundle/bin/node /usr/bin/ && \
+        ln -s ~/.meteor/packages/meteor-tool/*/mt-os.linux.x86_64/dev_bundle/bin/npm /usr/bin/ && \
+        rm /etc/nginx/conf.d/default.conf
+
+
+# Installing and setting up miniconda
+RUN curl -sSLO https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
+    bash Miniconda*.sh -b -p /usr/local/miniconda && \
+    rm Miniconda*.sh
+
+ENV PATH=/usr/local/miniconda/bin:$PATH \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8
+
+# Installing precomputed python packages
+RUN conda install -c conda-forge -y \
+                     awscli \
+                     boto3 \
+                     dipy \
+                     git \
+                     matplotlib \
+                     numpy \
+                     python=3.6 \
+                     scikit-image \
+                     scikit-learn \
+                     wget; \
+    sync &&  \
+    chmod +x /usr/local/miniconda/bin/* && \
+    conda clean --all -y; sync && \
+    python -c "from matplotlib import font_manager" && \
+    sed -i 's/\(backend *: \).*$/\1Agg/g' $( python -c "import matplotlib; print(matplotlib.matplotlib_fname())" )
+
+RUN npm install http-server -g
+
+ENV MC_DIR /home/mindcontrol
+ENV LC_ALL C
+
+
+COPY entrypoint_nginx.sh /home/entrypoint.sh
+#COPY  ndmg_launch.sh /home/ndmg_launch.sh
+
+RUN useradd  --create-home --home-dir ${MC_DIR} mindcontrol
+RUN chown mindcontrol:mindcontrol /home/entrypoint.sh &&\
+    chmod +x /home/entrypoint.sh &&\
+    mkdir -p ${MC_DIR}/mindcontrol &&\
+    chown -R mindcontrol:mindcontrol /home/mindcontrol &&\
+    chmod -R a+rx /home/mindcontrol &&\
+    chmod 777 /var/log/nginx /var/cache/nginx /opt /etc &&\
+    mkdir -p /mc_data /mc_startup_data /mc_settings /mc_fs &&\
+    chown mindcontrol:mindcontrol /mc_data /mc_startup_data /mc_settings /mc_fs &&\
+    rm -f /etc/nginx/nginx.conf &&\
+    ln -s /opt/settings/auth.htpasswd /etc/nginx/auth.htpasswd  &&\
+    ln -s /opt/settings/nginx.conf /etc/nginx/nginx.conf  &&\
+    ln -s /opt/settings/meteor.conf /etc/nginx/conf.d/meteor.conf 
+
+USER mindcontrol
+
+RUN cd ${MC_DIR}/mindcontrol &&\
+    git clone https://github.com/akeshavan/mindcontrol.git ${MC_DIR}/mindcontrol &&\
+    meteor update &&\
+    meteor npm install --save @babel/runtime &&\
+    meteor npm install --save bcrypt &&\
+    meteor reset
+    #git clone https://github.com/clowdcontrol/mindcontrol.git ${MC_DIR}/mindcontrol
+
+
+
