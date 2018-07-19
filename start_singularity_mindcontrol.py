@@ -578,7 +578,7 @@ if __name__ == "__main__":
     if args.bids_dir is not None:
         bids_dir = Path(args.bids_dir)
         try:
-            layout = BIDSLayout(bids_dir)
+            layout = BIDSLayout(bids_dir.as_posix())
         except ValueError as e:
             print("Invalid bids directory, skipping none freesurfer files. BIDS error:", e)
 
@@ -783,11 +783,11 @@ if __name__ == "__main__":
           + f" -H {mc_hdir.absolute()}:/home/{getpass.getuser()} {simg_path.absolute()}" \
           + " mindcontrol"
     if not args.no_server:
-        print(build_command)
+        print(build_command, flush=True)
         subprocess.run(build_command, cwd=basedir, shell=True, check=True)
-        print(cmd)
+        print(cmd, flush=True)
         subprocess.run(cmd, cwd=basedir, shell=True, check=True)
     else:
         print("Not starting server, but here's the command you would use if you wanted to:")
-        print(build_command)
-        print(cmd)
+        print(build_command, flush=True)
+        print(cmd, flush=True)
