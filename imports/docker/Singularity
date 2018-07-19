@@ -6,7 +6,7 @@ From: mindcontrol:latest
     Mainteiner Dylan Nielson\
 
 %startscript
-    export HOME=/home/`whoami`
+    export HOME=$(find /home/ -maxdepth 1 -writable)
     if [ ! -d  $HOME/mindcontrol ] || [ ! -d $HOME/.meteor ] ||  [ ! -d $HOME/.cordova ] ; then
         echo "Copying meteor files into singularity_home" > /output/out
         rsync -ach /home/mindcontrol/mindcontrol $HOME > /output/rsync 2>&1
