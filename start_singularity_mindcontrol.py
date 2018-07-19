@@ -479,7 +479,7 @@ def parse_stats(subjects_dir, subject):
 
 # This function creates valid Mindcontrol entries that are saved as .json files. # This f 
 # They can be loaded into the Mindcontrol database later
-def create_mindcontrol_entries(mindcontrol_base_dir, output_dir, subject, stats):
+def create_mindcontrol_entries(output_dir, subject, stats):
     import os
     from nipype.utils.filemanip import save_json
 
@@ -696,14 +696,12 @@ if __name__ == "__main__":
         volumes = ["brainmask.mgz", "wm.mgz", "aparc+aseg.mgz", "T1.mgz", "ribbon.mgz"]
         input_node = Node(IdentityInterface(fields=['subject_id',
                                                     "subjects_dir",
-                                                    "mindcontrol_base_dir",
                                                     "output_dir",
                                                     "startup_json_path"]),
                           name='inputnode')
 
         input_node.iterables = ("subject_id", subjects)
         input_node.inputs.subjects_dir = freesurfer_dir
-        input_node.inputs.mindcontrol_base_dir = bids_dir.as_posix()
         input_node.inputs.output_dir = freesurfer_dir.as_posix()
 
         dg_node = Node(Function(input_names=["subjects_dir", "subject", "volumes"],
@@ -721,8 +719,7 @@ if __name__ == "__main__":
                                        output_names=["output_dict"],
                                        function=parse_stats), name="get_freesurfer_stats")
 
-        write_mindcontrol_entries = Node(Function(input_names=["mindcontrol_base_dir",
-                                                               "output_dir",
+        write_mindcontrol_entries = Node(Function(input_names=["output_dir",
                                                                "subject",
                                                                "stats",
                                                                "startup_json_path"],
@@ -746,7 +743,6 @@ if __name__ == "__main__":
         wf.connect(input_node, "subject_id", get_stats_node, "subject")
         wf.connect(input_node, "subjects_dir", get_stats_node, "subjects_dir")
         wf.connect(input_node, "subject_id", write_mindcontrol_entries, "subject")
-        wf.connect(input_node, "mindcontrol_base_dir", write_mindcontrol_entries, "mindcontrol_base_dir")
         wf.connect(input_node, "output_dir", write_mindcontrol_entries, "output_dir")
         wf.connect(get_stats_node, "output_dict", write_mindcontrol_entries, "stats")
         wf.connect(input_node, "output_dir", datasink_node, "base_directory")
