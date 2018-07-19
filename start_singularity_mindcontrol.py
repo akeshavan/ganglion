@@ -766,7 +766,8 @@ if __name__ == "__main__":
         json.dump(manifest, h)
 
     build_command = f"singularity build {simg_path.absolute()} shub://Shotgunosine/mindcontrol"
-    
+    if bids_dir is None:
+        bids_dir = freesurfer_dir
     cmd = f"singularity instance.start -B {logdir.absolute()}:/var/log/nginx" \
           + f" -B {bids_dir.absolute()}:/mc_data" \
           + f" -B {freesurfer_dir.absolute()}:/mc_fs" \
