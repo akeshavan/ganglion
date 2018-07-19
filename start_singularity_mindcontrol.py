@@ -769,7 +769,7 @@ if __name__ == "__main__":
     with manifest_json.open('w') as h:
         json.dump(manifest, h)
 
-    build_command = f"singularity build {simg_path.absolute()} shub://shotgunosine/mindcontrol"
+    build_command = f"singularity build {simg_path.absolute()} shub://Shotgunosine/mindcontrol"
     
     cmd = f"singularity instance.start -B {logdir.absolute()}:/var/log/nginx" \
           + f" -B {bids_dir.absolute()}:/mc_data" \
