@@ -78,6 +78,8 @@ RUN cd ${MC_DIR}/mindcontrol &&\
     meteor update &&\
     meteor npm install --save @babel/runtime &&\
     meteor npm install --save bcrypt &&\
+    meteor remove meteorhacks:aggregate  &&\
+    meteor add sakulstra:aggregate &&\
     meteor reset
     #git clone https://github.com/clowdcontrol/mindcontrol.git ${MC_DIR}/mindcontrol
 
