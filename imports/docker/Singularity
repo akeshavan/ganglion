@@ -16,7 +16,6 @@ From: mindcontrol:latest
         rsync -ach /home/mindcontrol/.cordova $HOME >> /output/rsync 2>&1
         echo "home/mindcontrol/.cordova copied to $HOME" >> /output/out
     fi
-    ln -s /home/mindcontrol/mindcontrol/.meteor/local $HOME/mindcontrol/.meteor/local/
     echo "Starting mindcontrol and nginx" >> /output/out
     cd $HOME/mindcontrol
     # grab proper meteor port from settings file

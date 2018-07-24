@@ -603,7 +603,6 @@ if __name__ == "__main__":
     setdir = basedir/"settings"
     mcsetdir = setdir/"mc_settings"
     manifest_dir = setdir/"mc_manifest_init"
-    meteor_ldir = basedir/".meteor"
     simg_path = basedir/"mc_service.simg"
 
     logdir = basedir/"log"
@@ -630,8 +629,7 @@ if __name__ == "__main__":
         manifest_dir.mkdir()
     if not mc_hdir.exists():
         mc_hdir.mkdir()
-    if not meteor_ldir.exists():
-        meteor_ldir.mkdir()
+
     dockerfile = basedir/"Dockerfile_nginx"
     entrypoint = basedir/"entrypoint_nginx.sh"
     passfile = setdir/"auth.htpasswd"
@@ -640,7 +638,6 @@ if __name__ == "__main__":
     mcsetfile = mcsetdir/"mc_nginx_settings.json"
     mcportfile = mcsetdir/"mc_port"
     infofile = setdir/"mc_info.json"
-
 
     # Write settings files
     write_passfile(passfile)
@@ -765,6 +762,32 @@ if __name__ == "__main__":
     with manifest_json.open('w') as h:
         json.dump(manifest, h)
 
+    # Find out if singularity settings allow for pid namespaces
+    singularity_prefix = (subprocess.check_output("grep '^prefix' $(which singularity)", shell=True)
+                          .decode()
+                          .split('"')[1])
+    sysconfdir = (subprocess.check_output("grep '^sysconfdir' $(which singularity)", shell=True)
+                  .decode()
+                  .split('"')[1]
+                  .split('}')[1])
+    conf_path = os.path.join(singularity_prefix, sysconfdir[1:], 'singularity/singularity.conf')
+    allow_pid = (subprocess.check_output(f"grep '^allow pid ns' {conf_path}", shell=True)
+                 .decode()
+                 .split('=')[1]
+                 .strip()) == "yes"
+    if not allow_pid:
+        print("Host is not configured to allow pid namespaces!", flush=True)
+        print("You won't see the instance listed when you run ", flush=True)
+        print("'singularity instance.list'", flush=True)
+        print("To stop the mindcontrol server you'll need to ", flush=True)
+        print("find the process group id for the startscript ", flush=True)
+        print("with the following command: ", flush=True)
+        print("'ps -u $(whoami) -o pid,ppid,pgid,sess,cmd --forest'", flush=True)
+        print("then run:", flush=True)
+        print("'pkill -9 -g [the PGID for the startscript process]", flush=True)
+        print("Then you'll need to delete the mongo socket file with: ", flush=True)
+        print(f"rm /tmp/mongodb-{meteor_port + 1}.sock", flush=True)
+
     build_command = f"singularity build {simg_path.absolute()} shub://Shotgunosine/mindcontrol"
     if bids_dir is None:
         bids_dir = freesurfer_dir
@@ -774,11 +797,11 @@ if __name__ == "__main__":
           + f" -B {setdir.absolute()}:/opt/settings" \
           + f" -B {manifest_dir.absolute()}:/mc_startup_data" \
           + f" -B {nginx_scratch.absolute()}:/var/cache/nginx" \
-          + f" -B {meteor_ldir.absolute()}:/home/mindcontrol/mindcontrol/.meteor/local" \
           + f" -B {simg_out.absolute()}:/output" \
           + f" -B {mcsetdir.absolute()}:/mc_settings" \
           + f" -H {mc_hdir.absolute()}:/home/{getpass.getuser()} {simg_path.absolute()}" \
           + " mindcontrol"
+
     if not args.no_server:
         print(build_command, flush=True)
         subprocess.run(build_command, cwd=basedir, shell=True, check=True)
