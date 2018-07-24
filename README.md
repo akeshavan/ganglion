@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/Shotgunosine/mindcontrol.svg?style=svg)](https://circleci.com/gh/Shotgunosine/mindcontrol)
+[![https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg](https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg)](https://singularity-hub.org/collections/1293)
 
 # mindcontrol
 MindControl is an app for quality control of neuroimaging pipeline outputs. 
