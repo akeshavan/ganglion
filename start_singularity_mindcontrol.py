@@ -378,6 +378,22 @@ def write_mcsettings(mcsetfile, entry_types=None, freesurfer=False, startup_port
         json.dump(settings, h)
 
 
+def write_startfile(startfile, workdir, cmd):
+
+    script = f"""#! /bin/bash
+cd {workdir.absolute()}
+if [ ! -d scratch/singularity_home_${{USER}} ]; then
+    mkdir scratch/singularity_home_${{USER}}
+    cd scratch/singularity_home_${{USER}}
+    ln -s ../singularity_home/.cordova
+    ln -s ../singularity_home/.meteor
+    ln -s ../singularity_home/mindcontrol
+fi
+{cmd}
+"""
+    startfile.write_text(script)
+
+
 #this function finds data in the subjects_dir
 def data_grabber(subjects_dir, subject, volumes):
     import os
@@ -536,12 +552,15 @@ if __name__ == "__main__":
                         ' Pass this argument multiple times to add additional modules.')
     parser.add_argument('--startup_port',
                         default=3003,
+                        type=int,
                         help='Port number at which mindcontrol will look for startup manifest.')
     parser.add_argument('--nginx_port',
                         default=3000,
+                        type=int,
                         help='Port number at nginx will run. This is the port you connect to reach mindcontrol.')
     parser.add_argument('--meteor_port',
                         default=2998,
+                        type=int,
                         help='Port number at meteor will run. '
                              'This is mostly under the hood, '
                              'but you might need to change it if there is a port conflict.'
@@ -638,6 +657,7 @@ if __name__ == "__main__":
     mcsetfile = mcsetdir/"mc_nginx_settings.json"
     mcportfile = mcsetdir/"mc_port"
     infofile = setdir/"mc_info.json"
+    startfile = basedir/"start_mindcontrol.sh"
 
     # Write settings files
     write_passfile(passfile)
@@ -771,11 +791,11 @@ if __name__ == "__main__":
                   .split('"')[1]
                   .split('}')[1])
     conf_path = os.path.join(singularity_prefix, sysconfdir[1:], 'singularity/singularity.conf')
-    allow_pid = (subprocess.check_output(f"grep '^allow pid ns' {conf_path}", shell=True)
+    allow_pidns = (subprocess.check_output(f"grep '^allow pid ns' {conf_path}", shell=True)
                  .decode()
                  .split('=')[1]
                  .strip()) == "yes"
-    if not allow_pid:
+    if not allow_pidns:
         print("Host is not configured to allow pid namespaces!", flush=True)
         print("You won't see the instance listed when you run ", flush=True)
         print("'singularity instance.list'", flush=True)
@@ -791,17 +811,19 @@ if __name__ == "__main__":
     build_command = f"singularity build {simg_path.absolute()} shub://Shotgunosine/mindcontrol"
     if bids_dir is None:
         bids_dir = freesurfer_dir
-    cmd = f"singularity instance.start -B {logdir.absolute()}:/var/log/nginx" \
-          + f" -B {bids_dir.absolute()}:/mc_data" \
-          + f" -B {freesurfer_dir.absolute()}:/mc_fs" \
-          + f" -B {setdir.absolute()}:/opt/settings" \
-          + f" -B {manifest_dir.absolute()}:/mc_startup_data" \
-          + f" -B {nginx_scratch.absolute()}:/var/cache/nginx" \
-          + f" -B {simg_out.absolute()}:/output" \
-          + f" -B {mcsetdir.absolute()}:/mc_settings" \
-          + f" -H {mc_hdir.absolute()}:/home/{getpass.getuser()} {simg_path.absolute()}" \
-          + " mindcontrol"
-
+    startcmd = f"singularity instance.start -B {logdir.absolute()}:/var/log/nginx" \
+               + f" -B {bids_dir.absolute()}:/mc_data" \
+               + f" -B {freesurfer_dir.absolute()}:/mc_fs" \
+               + f" -B {setdir.absolute()}:/opt/settings" \
+               + f" -B {manifest_dir.absolute()}:/mc_startup_data" \
+               + f" -B {nginx_scratch.absolute()}:/var/cache/nginx" \
+               + f" -B {simg_out.absolute()}:/output" \
+               + f" -B {mcsetdir.absolute()}:/mc_settings" \
+               + f" -B {mc_hdir.absolute()}:/home/singularity_home" \
+               + f" -H {mc_hdir.absolute() + '_' + getpass.getuser()}:/home/{getpass.getuser()} {simg_path.absolute()}" \
+               + " mindcontrol"
+    write_startfile(startfile, basedir, startcmd)
+    cmd = f"/bin/bash {startfile.absolute()}"
     if not args.no_server:
         print(build_command, flush=True)
         subprocess.run(build_command, cwd=basedir, shell=True, check=True)
