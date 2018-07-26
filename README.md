@@ -1,3 +1,6 @@
+[![CircleCI](https://circleci.com/gh/Shotgunosine/mindcontrol.svg?style=svg)](https://circleci.com/gh/Shotgunosine/mindcontrol)
+[![https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg](https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg)](https://singularity-hub.org/collections/1293)
+
 # mindcontrol
 MindControl is an app for quality control of neuroimaging pipeline outputs. 
 
@@ -35,34 +38,34 @@ Create a database json file similar to [http://dxugxjm290185.cloudfront.net/hbn/
 * Define each module in `settings.dev.json` to point to your `entry_type`, and define the module's `staticURL`
 
 ## Bulid and deploy with singularity
-First you'll build a singularity container on a system where you've got docker installed.
-
-Clone this repository
-
+Connect to the system where you'd like to host mindcontrol with a  port forwarded:
+```
+ssh -L 3000:localhost:3000 server
+```
+Clone mindcontrol to a directory where you've got ~ 10 GB of free space.
 ```
 git clone https://github.com/Shotgunosine/mindcontrol
 cd mindcontrol
-git checkout hpc_compat
 ```
-
-Run auto_singularity_mindcontrol.py. You can see its documentation with `python auto_singularity_mindcontrol.py -h`.
-```
-python3 auto_singularity_mindcontrol.py --sing_out_dir ~/mc_sing --freesurfer
-```
-
-Copy the directory produced to the system you want to run mindcontrol on. For example, a node on the cluster where your data is already located. 
+You'll need to have a python 3 environment with access to nipype, pybids, freesurfer, and singularity.
+Run start_singularity_mindcontrol.py. You can see its documentation with `python start_singularity_mindcontrol.py -h`. 
 
 ```
-rsync -ach ~/mc_sing server:/data/project/
+python start_singularity_mindcontrol.py —freesurfer_dir [path to directory containing subdirectories for all the subjects] --sing_out_dir [path where mindcontrol can output files] --freesurfer
 ```
 
-Connect to that server with a few ports forwarded and run start_singularity_mindcontrol from that directory. You can see its documentation with `python start_singularity_mindcontrol.py -h`. You'll need freesurfer, singularity, python3 and nipype on that system.
+This command does a number of things:
+1) Prompt you to create users and passwords. I would just create one user for your lab and a password that you don’t mind sharing with others in the lab.creates folders with all the settings files that need to be loaded.  
+2) Runs mriconvert to convert .mgz to .nii.gz for T1, aparc+aseg, ribbion, and wm. Right now I’m just dropping those converted niftis in the directory beside the .mgzs, let me know if that’s a problem though.  
+3) Pulls the singularity image.  
+4) Starts an instance of the singularity image running with everything mounted appropriately.  
 
-```
-ssh -L 3000:localhost:3000 -L 3003:localhost:3003 server
-cd /data/project/mc_sing
-start_singularity_mindcontrol.py --bids_dir /data/project/bids_directory --freesurfer_dir /data/project/bids_directory/derivatives/freesurfer
-```
+Inside the image, there’s a fair bit of file copying that has to get done. It takes a while.  
+You can check the progress with `cat log/simg_out/out`.  
+Once that says `Starting mindcontrol and nginx`, you can `cat log/simg_out/mindcontrol.out` to see what mindcontrol is doing.  
+Once that says `App running at: http://localhost:2998/`, mindcontrol is all set up and running (but ignore that port number, it’s running on port 3000).
+
+Anyone who wants to see mindcontrol can then `ssh -L 3000:localhost:3000` to the server and browse to http://localhost:3000 in their browser. They’ll be prompted to login with the username and password you created way back in step 1.
 
 ## Demo
 
