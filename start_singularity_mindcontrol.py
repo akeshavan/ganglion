@@ -788,13 +788,17 @@ if __name__ == "__main__":
                           .split('"')[1])
     sysconfdir = (subprocess.check_output("grep '^sysconfdir' $(which singularity)", shell=True)
                   .decode()
-                  .split('"')[1]
-                  .split('}')[1])
-    conf_path = os.path.join(singularity_prefix, sysconfdir[1:], 'singularity/singularity.conf')
+                  .split('"')[1])
+    try:
+        sysconfdir = sysconfdir.split('}')[1]
+        conf_path = os.path.join(singularity_prefix, sysconfdir[1:], 'singularity/singularity.conf')
+    except IndexError:
+        conf_path = os.path.join(sysconfdir, 'singularity/singularity.conf')
+
     allow_pidns = (subprocess.check_output(f"grep '^allow pid ns' {conf_path}", shell=True)
-                 .decode()
-                 .split('=')[1]
-                 .strip()) == "yes"
+                   .decode()
+                   .split('=')[1]
+                   .strip()) == "yes"
     if not allow_pidns:
         print("Host is not configured to allow pid namespaces!", flush=True)
         print("You won't see the instance listed when you run ", flush=True)
@@ -820,7 +824,7 @@ if __name__ == "__main__":
                + f" -B {simg_out.absolute()}:/output" \
                + f" -B {mcsetdir.absolute()}:/mc_settings" \
                + f" -B {mc_hdir.absolute()}:/home/singularity_home" \
-               + f" -H {mc_hdir.absolute() + '_' + getpass.getuser()}:/home/{getpass.getuser()} {simg_path.absolute()}" \
+               + f" -H {mc_hdir.absolute().as_posix() + '_' + getpass.getuser()}:/home/{getpass.getuser()} {simg_path.absolute()}" \
                + " mindcontrol"
     write_startfile(startfile, basedir, startcmd)
     cmd = f"/bin/bash {startfile.absolute()}"
