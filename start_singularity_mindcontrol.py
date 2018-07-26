@@ -658,6 +658,8 @@ if __name__ == "__main__":
     mcportfile = mcsetdir/"mc_port"
     infofile = setdir/"mc_info.json"
     startfile = basedir/"start_mindcontrol.sh"
+    readme = basedir/"my_readme.md"
+    readme_str = "# Welcome to your mindcontrol instance  \n"
 
     # Write settings files
     write_passfile(passfile)
@@ -800,17 +802,22 @@ if __name__ == "__main__":
                    .split('=')[1]
                    .strip()) == "yes"
     if not allow_pidns:
-        print("Host is not configured to allow pid namespaces!", flush=True)
-        print("You won't see the instance listed when you run ", flush=True)
-        print("'singularity instance.list'", flush=True)
-        print("To stop the mindcontrol server you'll need to ", flush=True)
-        print("find the process group id for the startscript ", flush=True)
-        print("with the following command: ", flush=True)
-        print("'ps -u $(whoami) -o pid,ppid,pgid,sess,cmd --forest'", flush=True)
-        print("then run:", flush=True)
-        print("'pkill -9 -g [the PGID for the startscript process]", flush=True)
-        print("Then you'll need to delete the mongo socket file with: ", flush=True)
-        print(f"rm /tmp/mongodb-{meteor_port + 1}.sock", flush=True)
+        stop_str = '\n'.join(["Host is not configured to allow pid namespaces!",
+                              "You won't see the instance listed when you run ",
+                              "'singularity instance.list'",
+                              "To stop the mindcontrol server you'll need to ",
+                              "find the process group id for the startscript ",
+                              "with the following command:  ",
+                              "`ps -u $(whoami) -o pid,ppid,pgid,sess,cmd --forest`",
+                              "then run:",
+                              "`pkill -9 -g [the PGID for the startscript process]`",
+                              "Then you'll need to delete the mongo socket file with: ",
+                              f"rm /tmp/mongodb-{meteor_port + 1}.sock"
+                              ])
+    else:
+        print("To stop the mindcontrol server run:", flush=True)
+        stop_str += "`singularity instance.stop mindcontrol`"
+    print(stop_str, flush=True)
 
     build_command = f"singularity build {simg_path.absolute()} shub://Shotgunosine/mindcontrol"
     if bids_dir is None:
@@ -824,16 +831,27 @@ if __name__ == "__main__":
                + f" -B {simg_out.absolute()}:/output" \
                + f" -B {mcsetdir.absolute()}:/mc_settings" \
                + f" -B {mc_hdir.absolute()}:/home/singularity_home" \
-               + f" -H {mc_hdir.absolute().as_posix() + '_' + getpass.getuser()}:/home/{getpass.getuser()} {simg_path.absolute()}" \
+               + f" -H {mc_hdir.absolute().as_posix() + '_'}${{USER}}:/home/${{USER}} {simg_path.absolute()}" \
                + " mindcontrol"
     write_startfile(startfile, basedir, startcmd)
     cmd = f"/bin/bash {startfile.absolute()}"
     if not args.no_server:
+        readme_str += "## Sinularity image was built with this comand  \n"
         print(build_command, flush=True)
         subprocess.run(build_command, cwd=basedir, shell=True, check=True)
         print(cmd, flush=True)
         subprocess.run(cmd, cwd=basedir, shell=True, check=True)
     else:
+        readme_str += "## To build the singularity image  \n"
         print("Not starting server, but here's the command you would use if you wanted to:")
         print(build_command, flush=True)
         print(cmd, flush=True)
+    readme_str += f"`{build_command}`  \n"
+    readme_str += "## Check to see if the singularity instance is running  \n"
+    readme_str += "`singularity instance.list mindcontrol`  \n"
+    readme_str += "## Start a singularity mindcontrol instance is running  \n"
+    readme_str += f"`{cmd}`  \n"
+    readme_str += "## Stop a singularity mindcontrol instance \n"
+    readme_str += stop_str
+    readme.write_text(readme_str)
+    
