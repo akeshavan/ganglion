@@ -7,14 +7,14 @@ From: mindcontrol:latest
 
 %startscript
     export HOME=$(find /home/ -maxdepth 1 -writable -not -name "singularity_home")
-    if [ ! -d  $HOME/mindcontrol ] || [ ! -d $HOME/.meteor ] ||  [ ! -d $HOME/.cordova ] ; then
+    if [ ! -d  /home/singularity_home/mindcontrol ] || [ ! -d  /home/singularity_home/.meteor ] ||  [ ! -d  /home/singularity_home/.cordova ] ; then
         echo "Copying meteor files into singularity_home" > /output/out
-        rsync -ach /home/mindcontrol/mindcontrol $HOME > /output/rsync 2>&1
+        rsync -ach /home/mindcontrol/mindcontrol /home/singularity_home/ > /output/rsync 2>&1
         echo "/home/mindcontrol/mindcontrol copied to $HOME" >> /output/out
-        rsync -ach /home/mindcontrol/.meteor $HOME >> /output/rsync 2>&1
+        rsync -ach /home/mindcontrol/.meteor /home/singularity_home/ >> /output/rsync 2>&1
         echo "/home/mindcontrol/.meteor copied to $HOME" >> /output/out
-        rsync -ach /home/mindcontrol/.cordova $HOME >> /output/rsync 2>&1
-        echo "home/mindcontrol/.cordova copied to $HOME" >> /output/out
+        rsync -ach /home/mindcontrol/.cordova /home/singularity_home/ >> /output/rsync 2>&1
+        echo "/home/mindcontrol/.cordova copied to $HOME" >> /output/out
     fi
     echo "Starting mindcontrol and nginx" >> /output/out
     cd $HOME/mindcontrol

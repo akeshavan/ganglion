@@ -9,6 +9,7 @@ from shutil import copyfile
 import getpass
 import random
 import sys
+import grp
 
 from nipype import MapNode, Workflow, Node
 from nipype.interfaces.freesurfer import MRIConvert
@@ -538,6 +539,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Start mindcontrol in a previously built'
                                                  ' singularity container and create initial manifest'
                                                  ' if needed.')
+    parser.add_argument('group',
+                        help='Name of the group under which mindcontrol directories should be created')
     parser.add_argument('--sing_out_dir',
                         default='.',
                         help='Directory to bulid singularirty image and files in.')
@@ -580,7 +583,25 @@ if __name__ == "__main__":
                         help='json formatted string of keyword arguments for nipype_plugin')
 
     args = parser.parse_args()
+    mc_gnam = args.group
+    mc_gid = grp.getgrnam(mc_gnam)[2]
+    # Check if username and gnam are the same and print a warning
+    if mc_gnam == getpass.getuser():
+        print("WARNING: You've set the group to your user group, no one else "
+              "will be able to start this mindcontrol instance.")
+    # Check if user is in group and if not throw an error
+    if mc_gid not in os.getgroups():
+        raise ValueError("You must be a member of the group specified for"
+                         " mindcontrol.")
+    # Check current umask, if it's not 002, throw an error
+    current_umask = os.umask(0)
+    os.umask(current_umask)
+    if current_umask > 2:
+        raise Exception("This command must be run with a umask of 2, run"
+                        " 'umask 002' to set the umask then try"
+                        " this command again")
     sing_out_dir = args.sing_out_dir
+
     if args.custom_settings is not None:
         custom_settings = Path(args.custom_settings)
     else:
@@ -632,6 +653,8 @@ if __name__ == "__main__":
 
     if not basedir.exists():
         basedir.mkdir()
+    chmod_cmd = f'chgrp -R {mc_gnam} {basedir} && chmod -R g+s {basedir} && chmod -R 770 {basedir}'
+    _chmod_res = subprocess.check_output(chmod_cmd, shell=True)
     if not setdir.exists():
         setdir.mkdir()
     if not logdir.exists():
@@ -816,7 +839,7 @@ if __name__ == "__main__":
                               ])
     else:
         print("To stop the mindcontrol server run:", flush=True)
-        stop_str += "`singularity instance.stop mindcontrol`"
+        stop_str = "`singularity instance.stop mindcontrol`"
     print(stop_str, flush=True)
 
     build_command = f"singularity build {simg_path.absolute()} shub://Shotgunosine/mindcontrol"
