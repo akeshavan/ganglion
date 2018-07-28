@@ -10,6 +10,7 @@ import getpass
 import random
 import sys
 import grp
+import socket
 
 from nipype import MapNode, Workflow, Node
 from nipype.interfaces.freesurfer import MRIConvert
@@ -395,6 +396,21 @@ fi
     startfile.write_text(script)
 
 
+def write_stopfile(stopfile, workdir, group, cmd, run_stop=True):
+    #find scratch/singularity_home ! -group {group} -exec chmod 770 {{}} \; -exec chown :{group} {{}} \;
+
+    if run_stop:
+        script = f"""#! /bin/bash
+cd {workdir.absolute()}
+{cmd}
+chown -R :{group} scratch/singularity_home/mindcontrol/.meteor/local
+chmod -R 770 scratch/singularity_home/mindcontrol/.meteor/local
+rm -rf scratch/singularity_home/mindcontrol/.meteor/local/db/mongod.lock
+"""
+    else:
+        raise NotImplementedError
+    stopfile.write_text(script)
+
 #this function finds data in the subjects_dir
 def data_grabber(subjects_dir, subject, volumes):
     import os
@@ -681,6 +697,7 @@ if __name__ == "__main__":
     mcportfile = mcsetdir/"mc_port"
     infofile = setdir/"mc_info.json"
     startfile = basedir/"start_mindcontrol.sh"
+    stopfile = basedir/"stop_mindcontrol.sh"
     readme = basedir/"my_readme.md"
     readme_str = "# Welcome to your mindcontrol instance  \n"
 
@@ -696,10 +713,6 @@ if __name__ == "__main__":
     else:
         write_mcsettings(mcsetfile, entry_types=entry_types, freesurfer=freesurfer,
                      startup_port=startup_port, nginx_port=nginx_port)
-    # Copy singularity run script to directory
-    srun_source = Path(__file__)
-    srun_dest = basedir / 'start_singularity_mindcontrol.py'
-    copyfile(srun_source.as_posix(), srun_dest.as_posix())
 
     # infofile = mc_singularity_path/'settings/mc_info.json'
     # with infofile.open('r') as h:
@@ -825,7 +838,7 @@ if __name__ == "__main__":
                    .split('=')[1]
                    .strip()) == "yes"
     if not allow_pidns:
-        stop_str = '\n'.join(["Host is not configured to allow pid namespaces!",
+        stop_cmd = '\n'.join(["Host is not configured to allow pid namespaces!",
                               "You won't see the instance listed when you run ",
                               "'singularity instance.list'",
                               "To stop the mindcontrol server you'll need to ",
@@ -838,9 +851,7 @@ if __name__ == "__main__":
                               f"rm /tmp/mongodb-{meteor_port + 1}.sock"
                               ])
     else:
-        print("To stop the mindcontrol server run:", flush=True)
-        stop_str = "`singularity instance.stop mindcontrol`"
-    print(stop_str, flush=True)
+        stop_cmd = "singularity instance.stop mindcontrol"
 
     build_command = f"singularity build {simg_path.absolute()} shub://Shotgunosine/mindcontrol"
     if bids_dir is None:
@@ -857,6 +868,7 @@ if __name__ == "__main__":
                + f" -H {mc_hdir.absolute().as_posix() + '_'}${{USER}}:/home/${{USER}} {simg_path.absolute()}" \
                + " mindcontrol"
     write_startfile(startfile, basedir, startcmd)
+    write_stopfile(stopfile, basedir, mc_gnam, stop_cmd, allow_pidns)
     cmd = f"/bin/bash {startfile.absolute()}"
     if not args.no_server:
         readme_str += "## Sinularity image was built with this comand  \n"
@@ -869,12 +881,17 @@ if __name__ == "__main__":
         print("Not starting server, but here's the command you would use if you wanted to:")
         print(build_command, flush=True)
         print(cmd, flush=True)
+    print("To stop the mindcontrol server run:", flush=True)
+    print(f'/bin/bash {stopfile.absolute()}', flush=True)
     readme_str += f"`{build_command}`  \n"
     readme_str += "## Check to see if the singularity instance is running  \n"
     readme_str += "`singularity instance.list mindcontrol`  \n"
-    readme_str += "## Start a singularity mindcontrol instance is running  \n"
+    readme_str += "## Start a singularity mindcontrol instance \n"
     readme_str += f"`{cmd}`  \n"
+    readme_str += "## Connect to this instance  \n"
+    readme_str += f"`ssh -L {nginx_port}:localhost:{nginx_port} {socket.gethostname()}`  \n"
+    readme_str += f"then browse to http:\\localhost:{nginx_port} on the machine you connected from.  \n"
     readme_str += "## Stop a singularity mindcontrol instance \n"
-    readme_str += stop_str
+    readme_str += f'/bin/bash {stopfile.absolute()}'
     readme.write_text(readme_str)
     

@@ -9,11 +9,14 @@ From: mindcontrol:latest
     export HOME=$(find /home/ -maxdepth 1 -writable -not -name "singularity_home")
     if [ ! -d  /home/singularity_home/mindcontrol ] || [ ! -d  /home/singularity_home/.meteor ] ||  [ ! -d  /home/singularity_home/.cordova ] ; then
         echo "Copying meteor files into singularity_home" > /output/out
-        rsync -ach /home/mindcontrol/mindcontrol /home/singularity_home/ > /output/rsync 2>&1
+        rsync -rlD /home/mindcontrol/mindcontrol /home/singularity_home/ > /output/rsync 2>&1
+        chmod -R 770 /home/singularity_home/mindcontrol
         echo "/home/mindcontrol/mindcontrol copied to $HOME" >> /output/out
-        rsync -ach /home/mindcontrol/.meteor /home/singularity_home/ >> /output/rsync 2>&1
+        rsync -rlD /home/mindcontrol/.meteor /home/singularity_home/ >> /output/rsync 2>&1
+        chmod -R 770 /home/singularity_home/.meteor
         echo "/home/mindcontrol/.meteor copied to $HOME" >> /output/out
-        rsync -ach /home/mindcontrol/.cordova /home/singularity_home/ >> /output/rsync 2>&1
+        rsync -rlD /home/mindcontrol/.cordova /home/singularity_home/ >> /output/rsync 2>&1
+        chmod -R 770 /home/singularity_home/.cordova
         echo "/home/mindcontrol/.cordova copied to $HOME" >> /output/out
     fi
     echo "Starting mindcontrol and nginx" >> /output/out
