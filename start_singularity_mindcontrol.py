@@ -402,13 +402,12 @@ def write_stopfile(stopfile, workdir, group, cmd, meteor_port, run_stop=True):
     if run_stop:
         script = f"""#! /bin/bash
 cd {workdir.absolute()}
-singularity exec instance://mindcontrol mongodump --out=/output/mindcontrol_database --port={meteor_port+1} --gzip
 if [ -d log/simg_out/mindcontrol_database ] ; then
     DATE=$(date +"%Y%m%d%H%M%S")
     echo "Saving previous database dump to log/simg_out/mindcontrol_database_${{DATE}}.tar.gz"
     tar -czf log/simg_out/mindcontrol_database_${{DATE}}.tar.gz log/simg_out/mindcontrol_database/
 fi
-
+singularity exec instance://mindcontrol mongodump --out=/output/mindcontrol_database --port={meteor_port+1} --gzip
 singularity exec instance://mindcontrol mongod --dbpath=/home/${{USER}}/mindcontrol/.meteor/local/db --shutdown
 {cmd}
 echo "Waiting 30 seconds for everything to finish writing"

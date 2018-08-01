@@ -25,8 +25,11 @@ From: mindcontrol:latest
     MONGO_PORT=$(expr ${MC_PORT} + 1)
 
     # Check if we need to reset meteor
-    DB_OWNER=$(stat -c %U /home/singularity_home/mindcontrol/.meteor/local/db)
-
+    DB_OWNER="NONE"
+    if [ -d /home/singularity_home/mindcontrol/.meteor/local/db ] ; then
+        DB_OWNER=$(stat -c %U /home/singularity_home/mindcontrol/.meteor/local/db)
+    fi
+    RESTORE_DB=0
     if [ ${DB_OWNER} != $(stat -c %U $HOME) ] ; then
         if [ ! -d  /output/mindcontrol_database ] ; then
             echo "Someone else owns the mongo database and there's no database dump to load from at /output/mindcontrol_database. Something's gone wrong. Exiting so we don't destroy data." >> /output/out
@@ -34,15 +37,14 @@ From: mindcontrol:latest
         fi
         echo "Someone else owns the db and a database dump was found, resetting Meteor" >> /output/out
         meteor reset
-        RESTORE_DB="Yes"
+        RESTORE_DB=1
     fi
     echo "Starting mindcontrol and nginx" >> /output/out
     nginx
     nohup meteor --settings /mc_settings/mc_nginx_settings.json --port $MC_PORT > /output/mindcontrol.out 2>&1 &
-    if [ "${RESTORE_DB}"" == "Yes" ] ; then
-
-        # from https://superuser.com/a/809159
-        export DELAY_STRING="=> Started your app."
-        /bin/bash -c "grep -m 1 $DELAY_STRING <(tail -f /output/mindcontrol.out)"
+    if [ ${RESTORE_DB} -eq 1 ] ; then
+        echo "a"
+        bash -c 'grep -m 1 "=> Started your app." <( tail -f /output/mindcontrol.out)'
+        echo "b"
         mongorestore  --port=${MONGO_PORT} --drop --preserveUUID --gzip /output/mindcontrol_database/
     fi
