@@ -30,7 +30,7 @@ From: mindcontrol:latest
         DB_OWNER=$(stat -c %U /home/singularity_home/mindcontrol/.meteor/local/db)
     fi
     RESTORE_DB=0
-    if [ ${DB_OWNER} != $(stat -c %U $HOME) ] ; then
+    if [ ${DB_OWNER} != $(stat -c %U $HOME) ]  && [ ${DB_OWNER} != "NONE" ] ; then
         if [ ! -d  /output/mindcontrol_database ] ; then
             echo "Someone else owns the mongo database and there's no database dump to load from at /output/mindcontrol_database. Something's gone wrong. Exiting so we don't destroy data." >> /output/out
             exit 64
