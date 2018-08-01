@@ -19,9 +19,29 @@ From: mindcontrol:latest
         chmod -R 770 /home/singularity_home/.cordova
         echo "/home/mindcontrol/.cordova copied to $HOME" >> /output/out
     fi
-    echo "Starting mindcontrol and nginx" >> /output/out
     cd $HOME/mindcontrol
     # grab proper meteor port from settings file
     MC_PORT=$(cat /mc_settings/mc_port)
+    MONGO_PORT=$(expr ${MC_PORT} + 1)
+
+    # Check if we need to reset meteor
+    DB_OWNER=$(stat -c %U /home/singularity_home/mindcontrol/.meteor/local/db)
+
+    if [ ${DB_OWNER} != $(stat -c %U $HOME) ] ; then
+        if [ ! -d  /output/mindcontrol_database ] ; then
+            echo "Someone else owns the mongo database and there's no database dump to load from at /output/mindcontrol_database. Something's gone wrong. Exiting so we don't destroy data." >> /output/out
+            exit 64
+        fi
+        echo "Someone else owns the db and a database dump was found, resetting Meteor" >> /output/out
+        meteor reset
+        RESTORE_DB=Yes
+    fi
+    echo "Starting mindcontrol and nginx" >> /output/out
+    nginx
     nohup meteor --settings /mc_settings/mc_nginx_settings.json --port $MC_PORT > /output/mindcontrol.out 2>&1 &
-    nginx -g "daemon off;"
+    if [ ${RESTORE_DB} == Yes ] ; then
+
+        # from https://superuser.com/a/809159
+        grep -m 1 "=> Started your app." <(tail -f /output/mindcontrol.out)
+        mongorestore  --port=${MONGO_PORT} --drop --preserveUUID --gzip /output/mindcontrol_database/
+    fi

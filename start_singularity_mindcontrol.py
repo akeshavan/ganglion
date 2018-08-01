@@ -396,16 +396,26 @@ fi
     startfile.write_text(script)
 
 
-def write_stopfile(stopfile, workdir, group, cmd, run_stop=True):
+def write_stopfile(stopfile, workdir, group, cmd, meteor_port, run_stop=True):
     #find scratch/singularity_home ! -group {group} -exec chmod 770 {{}} \; -exec chown :{group} {{}} \;
 
     if run_stop:
         script = f"""#! /bin/bash
 cd {workdir.absolute()}
+singularity exec instance://mindcontrol mongodump --out=/output/mindcontrol_database --port={meteor_port+1} --gzip
+if [ -d log/simg_out/mindcontrol_database ] ; then
+    DATE=$(date +"%Y%m%d%H%M%S")
+    echo "Saving previous database dump to log/simg_out/mindcontrol_database_${{DATE}}.tar.gz"
+    tar -czf log/simg_out/mindcontrol_database_${{DATE}}.tar.gz log/simg_out/mindcontrol_database/
+fi
+
+singularity exec instance://mindcontrol mongod --dbpath=/home/${{USER}}/mindcontrol/.meteor/local/db --shutdown
 {cmd}
+echo "Waiting 30 seconds for everything to finish writing"
+sleep 30
 chown -R :{group} scratch/singularity_home/mindcontrol/.meteor/local
 chmod -R 770 scratch/singularity_home/mindcontrol/.meteor/local
-rm -rf scratch/singularity_home/mindcontrol/.meteor/local/db/mongod.lock
+chmod -R 770 log
 """
     else:
         raise NotImplementedError
@@ -868,7 +878,7 @@ if __name__ == "__main__":
                + f" -H {mc_hdir.absolute().as_posix() + '_'}${{USER}}:/home/${{USER}} {simg_path.absolute()}" \
                + " mindcontrol"
     write_startfile(startfile, basedir, startcmd)
-    write_stopfile(stopfile, basedir, mc_gnam, stop_cmd, allow_pidns)
+    write_stopfile(stopfile, basedir, mc_gnam, stop_cmd, meteor_port, allow_pidns)
     cmd = f"/bin/bash {startfile.absolute()}"
     if not args.no_server:
         readme_str += "## Sinularity image was built with this comand  \n"
