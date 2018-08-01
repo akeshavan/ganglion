@@ -34,12 +34,12 @@ From: mindcontrol:latest
         fi
         echo "Someone else owns the db and a database dump was found, resetting Meteor" >> /output/out
         meteor reset
-        RESTORE_DB=Yes
+        RESTORE_DB="Yes"
     fi
     echo "Starting mindcontrol and nginx" >> /output/out
     nginx
     nohup meteor --settings /mc_settings/mc_nginx_settings.json --port $MC_PORT > /output/mindcontrol.out 2>&1 &
-    if [ ${RESTORE_DB} == Yes ] ; then
+    if [ "${RESTORE_DB}"" == "Yes" ] ; then
 
         # from https://superuser.com/a/809159
         export DELAY_STRING="=> Started your app."
