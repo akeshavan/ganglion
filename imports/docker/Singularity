@@ -42,6 +42,7 @@ From: mindcontrol:latest
     if [ ${RESTORE_DB} == Yes ] ; then
 
         # from https://superuser.com/a/809159
-        grep -m 1 "=> Started your app." <(tail -f /output/mindcontrol.out)
+        export DELAY_STRING="=> Started your app."
+        /bin/bash -c "grep -m 1 $DELAY_STRING <(tail -f /output/mindcontrol.out)"
         mongorestore  --port=${MONGO_PORT} --drop --preserveUUID --gzip /output/mindcontrol_database/
     fi
