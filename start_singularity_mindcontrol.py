@@ -866,6 +866,8 @@ if __name__ == "__main__":
     build_command = f"singularity build {simg_path.absolute()} shub://Shotgunosine/mindcontrol"
     if bids_dir is None:
         bids_dir = freesurfer_dir
+    elif freesurfer_dir is None:
+        freesurfer_dir = bids_dir
     startcmd = f"singularity instance.start -B {logdir.absolute()}:/var/log/nginx" \
                + f" -B {bids_dir.absolute()}:/mc_data" \
                + f" -B {freesurfer_dir.absolute()}:/mc_fs" \
