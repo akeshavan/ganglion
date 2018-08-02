@@ -73,6 +73,8 @@ The next time a user in the appropriate group would like to start it, they shoul
 
 Don't use the `singularity instance.start` and `singularity instance.stop` commands, as the additional permissions fixing and database restoring or dumping won't run.
 
+The startscript should write `my_readme.md` to the output directory you specify with instructions on running and connecting to the mindcontrol instance you've created with all of the appropriate paths and port numbers filled in. 
+
 ## Demo
 
 Check out the [demo](http://mindcontrol.herokuapp.com/). [This data is from the 1000 Functional Connectomes Project](http://fcon_1000.projects.nitrc.org/fcpClassic/FcpTable.html)
