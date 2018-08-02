@@ -48,10 +48,10 @@ git clone https://github.com/Shotgunosine/mindcontrol
 cd mindcontrol
 ```
 You'll need to have a python 3 environment with access to nipype, pybids, freesurfer, and singularity.
-Run start_singularity_mindcontrol.py. You can see its documentation with `python start_singularity_mindcontrol.py -h`. 
+Run start_singularity_mindcontrol.py. You can see its documentation with `python start_singularity_mindcontrol.py -h`. The script is now set up to take the name of a linux group as it's first argument. Any member of this group will be able to run the mindcontrol instance and access the mindcontrol files. 
 
 ```
-python start_singularity_mindcontrol.py —freesurfer_dir [path to directory containing subdirectories for all the subjects] --sing_out_dir [path where mindcontrol can output files] --freesurfer
+python start_singularity_mindcontrol.py [name of the group you want to won mindcontrol files] —freesurfer_dir [path to directory containing subdirectories for all the subjects] --sing_out_dir [path where mindcontrol can output files] --freesurfer
 ```
 
 This command does a number of things:
@@ -60,12 +60,20 @@ This command does a number of things:
 3) Pulls the singularity image.  
 4) Starts an instance of the singularity image running with everything mounted appropriately.  
 
-Inside the image, there’s a fair bit of file copying that has to get done. It takes a while.  
+Inside the image, there’s a fair bit of file copying that has to get done. It takes a while, potentially quite a while if you are on a system with a slow filesystem.  
 You can check the progress with `cat log/simg_out/out`.  
 Once that says `Starting mindcontrol and nginx`, you can `cat log/simg_out/mindcontrol.out` to see what mindcontrol is doing.  
 Once that says `App running at: http://localhost:2998/`, mindcontrol is all set up and running (but ignore that port number, it’s running on port 3000).
 
 Anyone who wants to see mindcontrol can then `ssh -L 3000:localhost:3000` to the server and browse to http://localhost:3000 in their browser. They’ll be prompted to login with the username and password you created way back in step 1.
+
+Once you're done running mindcontrol you can stop it with `/bin/bash stop_mindcontrol.sh`. This command dumps the databse to log/simg_out/mindcontrol.out and compresses any previous database dump if finds there. It also fixes permissions on all of the files in the mindcontrol directory, so it may take a while to run. Killing the script before it finishes may prevent another user from being able to run your mindcontrol instance.
+
+The next time a user in the appropriate group would like to start it, they should just run `/bin/bash start_mindcontrol.sh`. This will start the instance and restore the database from the previously dumped data.
+
+Don't use the `singularity instance.start` and `singularity instance.stop` commands, as the additional permissions fixing and database restoring or dumping won't run.
+
+The startscript should write `my_readme.md` to the output directory you specify with instructions on running and connecting to the mindcontrol instance you've created with all of the appropriate paths and port numbers filled in. 
 
 ## Demo
 
