@@ -415,6 +415,7 @@ sleep 30
 chown -R :{group} scratch/singularity_home/mindcontrol/.meteor/local
 chmod -R 770 scratch/singularity_home/mindcontrol/.meteor/local
 chmod -R 770 log
+chmod -R 770 scratch/nginx
 """
     else:
         raise NotImplementedError
