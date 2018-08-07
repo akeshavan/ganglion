@@ -396,7 +396,7 @@ fi
     startfile.write_text(script)
 
 
-def write_stopfile(stopfile, workdir, group, cmd, meteor_port, run_stop=True):
+def write_stopfile(stopfile, workdir, group, cmd, meteor_port, container_name, run_stop=True):
     #find scratch/singularity_home ! -group {group} -exec chmod 770 {{}} \; -exec chown :{group} {{}} \;
 
     if run_stop:
@@ -407,8 +407,8 @@ if [ -d log/simg_out/mindcontrol_database ] ; then
     echo "Saving previous database dump to log/simg_out/mindcontrol_database_${{DATE}}.tar.gz"
     tar -czf log/simg_out/mindcontrol_database_${{DATE}}.tar.gz log/simg_out/mindcontrol_database/
 fi
-singularity exec instance://mindcontrol mongodump --out=/output/mindcontrol_database --port={meteor_port+1} --gzip
-singularity exec instance://mindcontrol mongod --dbpath=/home/${{USER}}/mindcontrol/.meteor/local/db --shutdown
+singularity exec instance://{container_name} mongodump --out=/output/mindcontrol_database --port={meteor_port+1} --gzip
+singularity exec instance://{container_name} mongod --dbpath=/home/${{USER}}/mindcontrol/.meteor/local/db --shutdown
 {cmd}
 echo "Waiting 30 seconds for everything to finish writing"
 sleep 30
@@ -567,9 +567,10 @@ if __name__ == "__main__":
                                                  ' if needed.')
     parser.add_argument('group',
                         help='Name of the group under which mindcontrol directories should be created')
+    parser.add_argument('container_name',
+                        help='Name for the container. Should be unique.')
     parser.add_argument('--sing_out_dir',
-                        default='.',
-                        help='Directory to bulid singularirty image and files in.')
+                        help='Directory to bulid singularirty image and files in. Dafaults to ./[container_name]')
     parser.add_argument('--custom_settings',
                         help='Path to custom settings json')
     parser.add_argument('--freesurfer', action='store_true',
@@ -626,7 +627,11 @@ if __name__ == "__main__":
         raise Exception("This command must be run with a umask of 2, run"
                         " 'umask 002' to set the umask then try"
                         " this command again")
-    sing_out_dir = args.sing_out_dir
+    container_name = args.container_name
+    if args.sing_out_dir is None:
+        sing_out_dir = container_name
+    else:
+        sing_out_dir = args.sing_out_dir
 
     if args.custom_settings is not None:
         custom_settings = Path(args.custom_settings)
@@ -647,7 +652,6 @@ if __name__ == "__main__":
             layout = BIDSLayout(bids_dir.as_posix())
         except ValueError as e:
             print("Invalid bids directory, skipping none freesurfer files. BIDS error:", e)
-
     else:
         bids_dir = None
 
@@ -861,7 +865,7 @@ if __name__ == "__main__":
                               f"rm /tmp/mongodb-{meteor_port + 1}.sock"
                               ])
     else:
-        stop_cmd = "singularity instance.stop mindcontrol"
+        stop_cmd = f"singularity instance.stop {container_name}"
 
     build_command = f"singularity build {simg_path.absolute()} shub://Shotgunosine/mindcontrol"
     if bids_dir is None:
@@ -878,9 +882,9 @@ if __name__ == "__main__":
                + f" -B {mcsetdir.absolute()}:/mc_settings" \
                + f" -B {mc_hdir.absolute()}:/home/singularity_home" \
                + f" -H {mc_hdir.absolute().as_posix() + '_'}${{USER}}:/home/${{USER}} {simg_path.absolute()}" \
-               + " mindcontrol"
+               + f" {container_name}"
     write_startfile(startfile, basedir, startcmd)
-    write_stopfile(stopfile, basedir, mc_gnam, stop_cmd, meteor_port, allow_pidns)
+    write_stopfile(stopfile, basedir, mc_gnam, stop_cmd, meteor_port, container_name, allow_pidns)
     cmd = f"/bin/bash {startfile.absolute()}"
     if not args.no_server:
         readme_str += "## Sinularity image was built with this comand  \n"
