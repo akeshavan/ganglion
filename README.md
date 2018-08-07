@@ -51,7 +51,7 @@ You'll need to have a python 3 environment with access to nipype, pybids, freesu
 Run start_singularity_mindcontrol.py. You can see its documentation with `python start_singularity_mindcontrol.py -h`. The script is now set up to take the name of a linux group as it's first argument. Any member of this group will be able to run the mindcontrol instance and access the mindcontrol files. 
 
 ```
-python start_singularity_mindcontrol.py [name of the group you want to won mindcontrol files] —freesurfer_dir [path to directory containing subdirectories for all the subjects] --sing_out_dir [path where mindcontrol can output files] --freesurfer
+python start_singularity_mindcontrol.py [name of the group you want to won mindcontrol files] [name you want to give container] —freesurfer_dir [path to directory containing subdirectories for all the subjects] --sing_out_dir [path where mindcontrol can output files] --freesurfer
 ```
 
 This command does a number of things:
