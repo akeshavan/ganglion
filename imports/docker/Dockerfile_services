@@ -70,7 +70,7 @@ RUN chown mindcontrol:mindcontrol /home/entrypoint.sh &&\
     chmod -R a+rx /home/mindcontrol &&\
     chmod 777 /var/log/nginx /var/cache/nginx /opt /etc &&\
     mkdir -p /mc_data /mc_startup_data /mc_settings /mc_fs /output /opt/settings /home/singularity_home &&\
-    chmot 777 /output /opt/settings /home/singularity_home &&\
+    chmod -R 777 /output /opt/settings /home/singularity_home &&\
     chown mindcontrol:mindcontrol /mc_data /mc_startup_data /mc_settings /mc_fs &&\
     rm -f /etc/nginx/nginx.conf &&\
     ln -s /opt/settings/auth.htpasswd /etc/nginx/auth.htpasswd  &&\
