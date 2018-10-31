@@ -98,6 +98,9 @@ Template.module.helpers({
   date_histogram: function(){
     return this.graph_type == "datehist"
   },
+  scatterplot: function() {
+	  return this.graph_type == "scatterplot"
+  }
   metric: function(){
           return get_metrics(this.entry_type)
       },
@@ -134,6 +137,10 @@ Template.base.rendered = function(){
               do_d3_date_histogram(result, "#d3vis_date_"+self.entry_type)
               })
         }
+		else if (self.graph_type == "scatterplot") {
+			console.log("rendering scatterplot", self.entry_type)
+			
+		}
       })
   });
 }

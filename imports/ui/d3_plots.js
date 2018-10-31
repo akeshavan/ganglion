@@ -1,5 +1,152 @@
 import "./module_templates.js"
 
+do_scatter = function(result, dom_id){
+    // console.log("you ran the do_scatter function")
+	// console.log($("#chart svg"))
+	//
+	//
+	// _.defer(function () {
+	//
+	// 	console.log("testing randomData")
+	// 	console.log(randomData(1,40))
+	//
+	// 	console.log("testing Meteor Call")
+	// 	console.log("result from meteor call is", result)
+	// 	console.log("nv.log", nv.log(result), nv.log(randomData(1,200)))//Meteor.call("getScatterData", "qa", "anat_fber", "anat_cnr", {}, function(error, result){console.log("error is", error, "result is", result)}))
+	//
+	//
+	// 	var chart;
+	// 	    nv.addGraph(function() {
+	// 	        chart = nv.models.scatterChart()
+	// 	            .showDistX(true)
+	// 	            .showDistY(true)
+	// 	            .duration(300)
+	// 	            .color(d3.scale.category10().range())
+	// 			//.useInteractiveGuideline(true);
+	// 	        chart.dispatch.on('renderEnd', function(){
+	// 	            console.log('render complete');
+	// 	        });
+	// 	        chart.xAxis.tickFormat(d3.format('.02f'));
+	// 	        chart.yAxis.tickFormat(d3.format('.02f'));
+	// 			chart.tooltipContent(function(key,y,e,graph){
+	// 							//console.log(key,"y",y,"e",e,"",graph)
+	// 			                return key;
+	// 			            });
+	// 			//chart.tooltip.contentGenerator(function(d){console.log(d)})
+	// 	        // d3.select('#chart svg')
+	// 			d3.select(dom_id)
+	// 	            //.datum(nv.log(randomData(1,200)))
+	// 				.datum(result)
+	// 	            .call(chart);
+	// 	        nv.utils.windowResize(chart.update);
+	// 	        chart.dispatch.on('stateChange', function(e) { nv.log('New State:', JSON.stringify(e)); });
+	// 	        return chart;
+	// 	    }, function(){
+	//
+    //             /*(d3.selectAll(".nv-point").on("click", function(d){
+    //                 console.log("data is", d)
+    //                 //addPapaya(d.info, d.info.entry_type, template_instance)
+    //                 //Session.set("currentViewerInfo", d.info)
+    //             })*/
+	//
+	// 				$(document).on("click", dom_id, function(e){
+	// 					var idx = e.target.__data__.point
+	//
+	// 					console.log("maybe you clicked, ", idx)
+	// 					Session.set("subject_selected_from_scatter",result[0].values[idx].info.name)
+	// 				})
+	//
+	// 	    });
+	// 	    function randomData(groups, points) { //# groups,# points per group
+	// 	        var data = [],
+	// 	            shapes = ['circle'],
+	// 	            random = d3.random.normal();
+	// 	        for (i = 0; i < groups; i++) {
+	// 	            data.push({
+	// 	                key: 'Group ' + i,
+	// 	                values: [],
+	// 	                slope: Math.random() - .01,
+	// 	                intercept: Math.random() - .5
+	// 	            });
+	// 	            for (j = 0; j < points; j++) {
+	// 	                data[i].values.push({
+	// 	                    x: random(),
+	// 	                    y: random(),
+	// 	                    size: Math.random(),
+	// 	                    shape: shapes[j % shapes.length]
+	// 	                });
+	// 	            }
+	// 	        }
+	// 	        return data;
+	// 	    }
+	// })
+				// data that you want to plot, I've used separate arrays for x and y values
+			var xdata = [5, 10, 15, 20],
+			    ydata = [3, 17, 4, 6];
+
+			// size and margins for the chart
+			var margin = {top: 20, right: 15, bottom: 60, left: 60}
+			  , width = 960 - margin.left - margin.right
+			  , height = 500 - margin.top - margin.bottom;
+
+			// x and y scales, I've used linear here but there are other options
+			// the scales translate data values to pixel values for you
+			var x = d3.scale.linear()
+			          .domain([0, d3.max(xdata)])  // the range of the values to plot
+			          .range([ 0, width ]);        // the pixel range of the x-axis
+
+			var y = d3.scale.linear()
+			          .domain([0, d3.max(ydata)])
+			          .range([ height, 0 ]);
+
+			// the chart object, includes all margins
+			var chart = d3.select('body')
+			.append('svg:svg')
+			.attr('width', width + margin.right + margin.left)
+			.attr('height', height + margin.top + margin.bottom)
+			.attr('class', 'chart')
+
+			// the main object where the chart and axis will be drawn
+			var main = chart.append('g')
+			.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+			.attr('width', width)
+			.attr('height', height)
+			.attr('class', 'main')
+
+			// draw the x axis
+			var xAxis = d3.svg.axis()
+			.scale(x)
+			.orient('bottom');
+
+			main.append('g')
+			.attr('transform', 'translate(0,' + height + ')')
+			.attr('class', 'main axis date')
+			.call(xAxis);
+
+			// draw the y axis
+			var yAxis = d3.svg.axis()
+			.scale(y)
+			.orient('left');
+
+			main.append('g')
+			.attr('transform', 'translate(0,0)')
+			.attr('class', 'main axis date')
+			.call(yAxis);
+
+			// draw the graph object
+			var g = main.append("svg:g");
+
+			g.selectAll("scatter-dots")
+			  .data(ydata)  // using the values in the ydata array
+			  .enter().append("svg:circle")  // create a new circle for each value
+			      .attr("cy", function (d) { return y(d); } ) // translate y value to a pixel
+			      .attr("cx", function (d,i) { return x(xdata[i]); } ) // translate x value
+			      .attr("r", 10) // radius of circle
+			      .style("opacity", 0.6); // opacity of circle
+
+}
+
+
 do_d3_date_histogram = function (result, dom_id) {
     // Defer to make sure we manipulate DOM
     _.defer(function () {
