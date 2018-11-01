@@ -62,7 +62,10 @@ ENV LC_ALL C
 COPY entrypoint_nginx.sh /home/entrypoint.sh
 #COPY  ndmg_launch.sh /home/ndmg_launch.sh
 
-RUN useradd  --create-home --home-dir ${MC_DIR} mindcontrol
+RUN useradd mindcontrol &&\
+    mkdir -p /mc_files/mindcontrol &&\
+    chown -R mindcontrol:mindcontrol mc_files &&\
+    ln -s /mc_files/mindcontrol /home/mindcontrol
 RUN chown mindcontrol:mindcontrol /home/entrypoint.sh &&\
     chmod +x /home/entrypoint.sh &&\
     mkdir -p ${MC_DIR}/mindcontrol &&\
@@ -86,7 +89,6 @@ RUN cd ${MC_DIR}/mindcontrol &&\
     meteor npm install --save bcrypt &&\
     meteor remove meteorhacks:aggregate  &&\
     meteor add sakulstra:aggregate &&\
-    meteor reset &&\
-    mv  /home/mindcontrol /mc_files/mindcontrol
+    meteor reset
     #git clone https://github.com/clowdcontrol/mindcontrol.git ${MC_DIR}/mindcontrol
 
