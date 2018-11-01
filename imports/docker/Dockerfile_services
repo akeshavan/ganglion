@@ -69,8 +69,8 @@ RUN chown mindcontrol:mindcontrol /home/entrypoint.sh &&\
     chown -R mindcontrol:mindcontrol /home/mindcontrol &&\
     chmod -R a+rx /home/mindcontrol &&\
     chmod 777 /var/log/nginx /var/cache/nginx /opt /etc &&\
-    mkdir -p /mc_data /mc_startup_data /mc_settings /mc_fs /output /opt/settings /home/singularity_home &&\
-    chmod -R 777 /output /opt/settings /home/singularity_home &&\
+    mkdir -p /mc_data /mc_startup_data /mc_settings /mc_fs /output /opt/settings /mc_files/singularity_home &&\
+    chmod -R 777 /output /opt/settings /mc_files/singularity_home &&\
     chown mindcontrol:mindcontrol /mc_data /mc_startup_data /mc_settings /mc_fs &&\
     rm -f /etc/nginx/nginx.conf &&\
     ln -s /opt/settings/auth.htpasswd /etc/nginx/auth.htpasswd  &&\
@@ -86,8 +86,7 @@ RUN cd ${MC_DIR}/mindcontrol &&\
     meteor npm install --save bcrypt &&\
     meteor remove meteorhacks:aggregate  &&\
     meteor add sakulstra:aggregate &&\
-    meteor reset
+    meteor reset &&\
+    mv  /home/mindcontrol /mc_files/mindcontrol
     #git clone https://github.com/clowdcontrol/mindcontrol.git ${MC_DIR}/mindcontrol
-
-
 

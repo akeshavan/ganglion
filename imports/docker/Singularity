@@ -7,17 +7,17 @@ From: mindcontrol:latest
 
 %startscript
     export HOME=$(find /home/ -maxdepth 1 -writable -not -name "singularity_home")
-    if [ ! -d  /home/singularity_home/mindcontrol ] || [ ! -d  /home/singularity_home/.meteor ] ||  [ ! -d  /home/singularity_home/.cordova ] ; then
+    if [ ! -d  /mc_files/singularity_home/mindcontrol ] || [ ! -d  /mc_files/singularity_home/.meteor ] ||  [ ! -d  /mc_files/singularity_home/.cordova ] ; then
         echo "Copying meteor files into singularity_home" > /output/out
-        rsync -rlD /home/mindcontrol/mindcontrol /home/singularity_home/ > /output/rsync 2>&1
-        chmod -R 770 /home/singularity_home/mindcontrol
-        echo "/home/mindcontrol/mindcontrol copied to $HOME" >> /output/out
-        rsync -rlD /home/mindcontrol/.meteor /home/singularity_home/ >> /output/rsync 2>&1
-        chmod -R 770 /home/singularity_home/.meteor
-        echo "/home/mindcontrol/.meteor copied to $HOME" >> /output/out
-        rsync -rlD /home/mindcontrol/.cordova /home/singularity_home/ >> /output/rsync 2>&1
-        chmod -R 770 /home/singularity_home/.cordova
-        echo "/home/mindcontrol/.cordova copied to $HOME" >> /output/out
+        rsync -rlD /mc_files/mindcontrol/mindcontrol /mc_files/singularity_home/ > /output/rsync 2>&1
+        chmod -R 770 /mc_files/singularity_home/mindcontrol
+        echo "/mc_files/mindcontrol/mindcontrol copied to $HOME" >> /output/out
+        rsync -rlD /mc_files/mindcontrol/.meteor /mc_files/singularity_home/ >> /output/rsync 2>&1
+        chmod -R 770 /mc_files/singularity_home/.meteor
+        echo "/mc_files/mindcontrol/.meteor copied to $HOME" >> /output/out
+        rsync -rlD /mc_files/mindcontrol/.cordova /mc_files/singularity_home/ >> /output/rsync 2>&1
+        chmod -R 770 /mc_files/singularity_home/.cordova
+        echo "/mc_files/mindcontrol/.cordova copied to $HOME" >> /output/out
     fi
     cd $HOME/mindcontrol
     # grab proper meteor port from settings file
@@ -26,8 +26,8 @@ From: mindcontrol:latest
 
     # Check if we need to reset meteor
     DB_OWNER="NONE"
-    if [ -d /home/singularity_home/mindcontrol/.meteor/local/db ] ; then
-        DB_OWNER=$(stat -c %U /home/singularity_home/mindcontrol/.meteor/local/db)
+    if [ -d /mc_files/singularity_home/mindcontrol/.meteor/local/db ] ; then
+        DB_OWNER=$(stat -c %U /mc_files/singularity_home/mindcontrol/.meteor/local/db)
     fi
     RESTORE_DB=0
     if [ ${DB_OWNER} != $(stat -c %U $HOME) ]  && [ ${DB_OWNER} != "NONE" ] ; then

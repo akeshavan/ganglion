@@ -387,9 +387,9 @@ cd {workdir.absolute()}
 if [ ! -d scratch/singularity_home_${{USER}} ]; then
     mkdir scratch/singularity_home_${{USER}}
     cd scratch/singularity_home_${{USER}}
-    ln -s ../singularity_home/.cordova
-    ln -s ../singularity_home/.meteor
-    ln -s ../singularity_home/mindcontrol
+    ln -s /mc_files/singularity_home/.cordova
+    ln -s /mc_files/singularity_home/.meteor
+    ln -s /mc_files/singularity_home/mindcontrol
 fi
 {cmd}
 """
@@ -880,7 +880,7 @@ if __name__ == "__main__":
                + f" -B {nginx_scratch.absolute()}:/var/cache/nginx" \
                + f" -B {simg_out.absolute()}:/output" \
                + f" -B {mcsetdir.absolute()}:/mc_settings" \
-               + f" -B {mc_hdir.absolute()}:/home/singularity_home" \
+               + f" -B {mc_hdir.absolute()}:/mc_files/singularity_home" \
                + f" -H {mc_hdir.absolute().as_posix() + '_'}${{USER}}:/home/${{USER}} {simg_path.absolute()}" \
                + f" {container_name}"
     write_startfile(startfile, basedir, startcmd)
