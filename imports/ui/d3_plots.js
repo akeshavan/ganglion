@@ -148,6 +148,7 @@ do_scatter = function(result, dom_id){
 
 
 do_d3_date_histogram = function (result, dom_id) {
+	console.log('doing d3_date_histogram histogram')
     // Defer to make sure we manipulate DOM
     _.defer(function () {
       // Use this as a global variable

@@ -47,6 +47,7 @@ get_metrics = function(entry_type){
 }
 
 render_histogram = function(entry_type){
+  console.log("rendering histogram")
                 var metric = Session.get("current_"+entry_type)//"Amygdala"
                 if (metric == null){
                     var all_metrics = Session.get(entry_type+"_metrics")
@@ -100,7 +101,7 @@ Template.module.helpers({
   },
   scatterplot: function() {
 	  return this.graph_type == "scatterplot"
-  }
+  },
   metric: function(){
           return get_metrics(this.entry_type)
       },
@@ -139,7 +140,7 @@ Template.base.rendered = function(){
         }
 		else if (self.graph_type == "scatterplot") {
 			console.log("rendering scatterplot", self.entry_type)
-			
+
 		}
       })
   });

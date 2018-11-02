@@ -14,7 +14,8 @@ Meteor.methods({
       },
 
     getHistogramData: function(entry_type, metric, bins, filter){
-          //console.log("getting histogram data")
+
+          console.log("getting histogram data")
           if (Meteor.isServer){
           var no_null = filter
           no_null["entry_type"] = entry_type
