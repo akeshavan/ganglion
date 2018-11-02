@@ -35,8 +35,6 @@ get_filter = function(entry_type){
         //console.log("myselect is", myselect)
         return myselect
     }
-
-
 }
 
 get_metrics = function(entry_type){
@@ -47,38 +45,70 @@ get_metrics = function(entry_type){
 }
 
 render_histogram = function(entry_type){
-                var metric = Session.get("current_"+entry_type)//"Amygdala"
-                if (metric == null){
-                    var all_metrics = Session.get(entry_type+"_metrics")
-                    if (all_metrics != null){
-                        Session.set("current_"+entry_type, all_metrics[0])
-                    }
+    var metric = Session.get("current_"+entry_type)//"Amygdala"
+    if (metric == null){
+        var all_metrics = Session.get(entry_type+"_metrics")
+        if (all_metrics != null){
+            Session.set("current_"+entry_type, all_metrics[0])
+        }
 
-                }
+    }
 
-                if (metric != null){
-                    var filter = get_filter(entry_type)
-                    //console.log("filter is", filter)
-                    Meteor.call("getHistogramData", entry_type, metric, 20, filter, function(error, result){
+    if (metric != null){
+        var filter = get_filter(entry_type)
+        //console.log("filter is", filter)
+        Meteor.call("getHistogramData", entry_type, metric, 20, filter, function(error, result){
 
-                    var data = result["histogram"]
-                    var minval = result["minval"]
-                    var maxval = result["maxval"]
-                    if (data.length){
-                        do_d3_histogram(data, minval, maxval, metric, "#d3vis_"+entry_type, entry_type)
-                    }
-                    else{
-                        console.log("attempt to clear histogram here")
-                        clear_histogram("#d3vis_"+entry_type)
-                    }
+        var data = result["histogram"]
+        var minval = result["minval"]
+        var maxval = result["maxval"]
+        if (data.length){
+            do_d3_histogram(data, minval, maxval, metric, "#d3vis_"+entry_type, entry_type)
+        }
+        else{
+            console.log("attempt to clear histogram here")
+            clear_histogram("#d3vis_"+entry_type)
+        }
 
 
-                    });
-                }
+        });
+    }
 }
 
 render_scatterplot = function(entry_type) {
 	var data, minvalX, maxvalX, minvalY, maxvalY = "";
+	var metric = Session.get("current_"+entry_type);
+	console.log('entr ' + entry_type);
+	if (metric == null) {
+		var all_metrics = Session.get(entry_type+"_metrics");
+		if (all_metrics != null) {
+			Session.set("current_"+entry_type, all_metrics[0]);
+		}
+	}
+
+	if (metric != null) {
+		var filter = get_filter(entry_type);
+		Meteor.call("getScatterData", entry_type, metric, filter, function(error, result) {
+			// var data = result["scatterplot"];
+			// if (data.length) {
+			// 	console.log('doscat');
+			// 	do_scatter(data, minvalX, maxvalX, minvalY, maxvalY, "#d3vis_"+entry_type, entry_type);
+			// 	// do_scatter()
+			// } else {
+			// 	// TODO: clear scatter
+			// }
+		});
+	}
+	// console.log("ASDF " + metric);
+	// console.log('ALL' + all_metrics);
+	//
+	// if (metric != null) {
+	// 	var filter = get_filter(entry_type);
+	// 	Meteor.call("getScatterData", entry_type, metric, 20, filter, function(error, result) {
+	// 		var data = result["scatterplot"];
+	// 		var minval
+	// 	})
+	// }
 	do_scatter(data, minvalX, maxvalX, minvalY, maxvalY, "#d3vis_"+entry_type, entry_type);
 }
 

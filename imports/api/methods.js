@@ -14,8 +14,8 @@ Meteor.methods({
       },
 
     getHistogramData: function(entry_type, metric, bins, filter){
-
           console.log("getting histogram data")
+		  // console.log("filter " + filter);
           if (Meteor.isServer){
           var no_null = filter
           no_null["entry_type"] = entry_type
@@ -64,10 +64,40 @@ Meteor.methods({
                 return output
           }}
           //{entry_type: "freesurfer"}
-
-
-
       },
+
+	  getScatterData: function(entry_type, metric, filter) {
+		  console.log(filter);
+		  var metric_name = "metrics."+metric; 
+		  console.log(Subjects.find(filter, {sort: [[metric_name, "ascending"]], limit: 1}).fetch()[1]);
+		  if (Meteor.isServer) {
+			  // console.log("ENTRY " +entry_type);
+			  // console.log('asdjfk;ajf;asjf');
+			  // console.log("SUBJECTS " + Subjects.find({}));
+	  	// 	var no_null = filter;
+		// 	no_null["entry_type"] = entry_type;
+		// 	var metric_name = "metrics."+metric;
+		//
+		// 	if (Object.keys(no_null).indexOf(metric_name) >= 0) {
+		// 		no_null[metric_name]["$ne"] = null;
+		// 	} else {
+		// 		no_null[metric_name] = {$ne: null};
+		// 	}
+		//
+		// 	var data = Subjects.aggregate([{$match: no_null},
+		// 				{$project: {$lowerBound: {$subtract: ["$metrics."+metric,
+		// 						{$mod: ["$metrics."+metric, 20]}]}}},
+		// 				{$group: {_id: "$lowerBound", count: {$sum: 1}}}]);
+		// 	var output = {};
+		// 	output["scatterplot"] = _.sortBy(data, "_id");
+		//
+		// 	return output;
+		// } else {
+		// 	var output = {};
+		// 	output["scatterplot"] = [];
+		// 	return output;
+		}
+	  },
 
     get_subject_ids_from_filter: function(filter){
         if (Meteor.isServer){
