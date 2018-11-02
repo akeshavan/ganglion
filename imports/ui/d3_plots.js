@@ -1,6 +1,6 @@
 import "./module_templates.js"
 
-do_scatter = function(result, dom_id){
+do_scatter = function(data, minvalX, maxvalX, minvalY, maxvalY, dom_id, entry_type){
     // console.log("you ran the do_scatter function")
 	// console.log($("#chart svg"))
 	//
@@ -80,6 +80,9 @@ do_scatter = function(result, dom_id){
 	// 	        return data;
 	// 	    }
 	// })
+
+			// if you already created the scatter, don't create another one.
+			if (d3.select('#d3_scatterplot').empty()) {
 				// data that you want to plot, I've used separate arrays for x and y values
 			var xdata = [5, 10, 15, 20],
 			    ydata = [3, 17, 4, 6];
@@ -100,11 +103,12 @@ do_scatter = function(result, dom_id){
 			          .range([ height, 0 ]);
 
 			// the chart object, includes all margins
-			var chart = d3.select('body')
+			var chart = d3.select('.d3scatterplot')
 			.append('svg:svg')
 			.attr('width', width + margin.right + margin.left)
 			.attr('height', height + margin.top + margin.bottom)
 			.attr('class', 'chart')
+			.attr('id', 'd3_scatterplot')
 
 			// the main object where the chart and axis will be drawn
 			var main = chart.append('g')
@@ -143,6 +147,8 @@ do_scatter = function(result, dom_id){
 			      .attr("cx", function (d,i) { return x(xdata[i]); } ) // translate x value
 			      .attr("r", 10) // radius of circle
 			      .style("opacity", 0.6); // opacity of circle
+			}
+
 
 }
 

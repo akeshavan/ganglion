@@ -47,7 +47,6 @@ get_metrics = function(entry_type){
 }
 
 render_histogram = function(entry_type){
-  console.log("rendering histogram")
                 var metric = Session.get("current_"+entry_type)//"Amygdala"
                 if (metric == null){
                     var all_metrics = Session.get(entry_type+"_metrics")
@@ -76,6 +75,11 @@ render_histogram = function(entry_type){
 
                     });
                 }
+}
+
+render_scatterplot = function(entry_type) {
+	var data, minvalX, maxvalX, minvalY, maxvalY = "";
+	do_scatter(data, minvalX, maxvalX, minvalY, maxvalY, "#d3vis_"+entry_type, entry_type);
 }
 
 
@@ -130,7 +134,6 @@ Template.base.rendered = function(){
   this.autorun(function() {
       Meteor.settings.public.modules.forEach(function(self, idx, arr){
         if (self.graph_type == "histogram"){
-          console.log("rendering histogram", self.entry_type)
           render_histogram(self.entry_type)
         }
         else if (self.graph_type == "datehist") {
@@ -139,8 +142,8 @@ Template.base.rendered = function(){
               })
         }
 		else if (self.graph_type == "scatterplot") {
-			console.log("rendering scatterplot", self.entry_type)
-
+			// console.log("rendering scatterplot", self.entry_type)
+			render_scatterplot(self.entry_type);
 		}
       })
   });

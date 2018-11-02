@@ -28,6 +28,20 @@
 
   {{/if}}
 
+	<!-- TODO: redefine selected metric  -->
+	{{#if scatterplot}}
+		Selected Metric: {{currentMetric}}
+
+		<div class="d3scatterplot"></div>
+
+		<select id="metric-select-scatter" class="form-control">
+			<option disabled="disabled" selected="selected">Please Select</option>
+			{{#each metric}}
+				<option value="{{this}}">{{this}}</option>
+			{{/each}}
+		</select>
+	{{/if}}
+
   {{#if date_histogram}}
 
     <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
