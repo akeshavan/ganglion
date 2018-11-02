@@ -9,7 +9,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 5487.3,
@@ -128,7 +128,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 6135.6,
@@ -247,7 +247,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 2450.0,
@@ -366,7 +366,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 4388.1,
@@ -485,7 +485,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 4372.4,
@@ -604,7 +604,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 5086.2,
@@ -723,7 +723,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 6674.4,
@@ -842,7 +842,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 13996.2,
@@ -961,7 +961,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 17018.7,
@@ -1080,7 +1080,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 2824.8,
@@ -1199,7 +1199,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 11913.5,
@@ -1318,7 +1318,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 4989.7,
@@ -1437,7 +1437,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 8620.7,
@@ -1556,7 +1556,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 15091.5,
@@ -1675,7 +1675,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 7621.2,
@@ -1794,7 +1794,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 12192.9,
@@ -1913,7 +1913,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 12132.5,
@@ -2032,7 +2032,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 9821.3,
@@ -2151,7 +2151,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 14261.6,
@@ -2270,7 +2270,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 16909.4,
@@ -2389,7 +2389,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 12659.9,
@@ -2508,7 +2508,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 5843.2,
@@ -2627,7 +2627,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 9309.6,
@@ -2746,7 +2746,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 2844.9,
@@ -2865,7 +2865,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 11441.0,
@@ -2984,7 +2984,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 8075.7,
@@ -3103,7 +3103,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 6400.4,
@@ -3222,7 +3222,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 17657.0,
@@ -3341,7 +3341,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 15146.8,
@@ -3460,7 +3460,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 10219.0,
@@ -3579,7 +3579,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 18447.3,
@@ -3698,7 +3698,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 34140.3,
@@ -3817,7 +3817,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 11760.1,
@@ -3936,7 +3936,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 23094.1,
@@ -4055,7 +4055,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 4623.4,
@@ -4174,7 +4174,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 10148.4,
@@ -4293,7 +4293,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 11642.6,
@@ -4412,7 +4412,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 6424.6,
@@ -4531,7 +4531,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 6598.9,
@@ -4650,7 +4650,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 6523.6,
@@ -4769,7 +4769,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 7694.2,
@@ -4889,7 +4889,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 4676.8,
@@ -5008,7 +5008,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 4260.5,
@@ -5127,7 +5127,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 5174.0,
@@ -5246,7 +5246,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 14519.7,
@@ -5365,7 +5365,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 4625.9,
@@ -5484,7 +5484,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 7258.0,
@@ -5603,7 +5603,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 9608.7,
@@ -5722,7 +5722,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 10078.1,
@@ -5841,7 +5841,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 8537.6,
@@ -5960,7 +5960,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 7177.0,
@@ -6079,7 +6079,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 25512.8,
@@ -6198,7 +6198,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 8628.5,
@@ -6317,7 +6317,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 30652.7,
@@ -6435,7 +6435,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 8748.5,
@@ -6554,7 +6554,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 7644.0,
@@ -6673,7 +6673,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 29198.1,
@@ -6792,7 +6792,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 15465.2,
@@ -6911,7 +6911,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 7604.5,
@@ -7030,7 +7030,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 12433.8,
@@ -7149,7 +7149,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 8741.2,
@@ -7268,7 +7268,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 17931.3,
@@ -7387,7 +7387,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 22476.3,
@@ -7506,7 +7506,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 6862.7,
@@ -7625,7 +7625,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 13480.7,
@@ -7744,7 +7744,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 19089.2,
@@ -7863,7 +7863,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 15801.2,
@@ -7982,7 +7982,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 10854.3,
@@ -8101,7 +8101,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 7400.5,
@@ -8220,7 +8220,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 11649.9,
@@ -8339,7 +8339,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 8772.8,
@@ -8458,7 +8458,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 13075.1,
@@ -8577,7 +8577,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 14824.2,
@@ -8696,7 +8696,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 5165.3,
@@ -8815,7 +8815,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 4493.4,
@@ -8934,7 +8934,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 11627.6,
@@ -9053,7 +9053,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 18466.4,
@@ -9172,7 +9172,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 9704.2,
@@ -9291,7 +9291,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 17447.4,
@@ -9410,7 +9410,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 10338.7,
@@ -9529,7 +9529,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 17773.5,
@@ -9648,7 +9648,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 13699.1,
@@ -9767,7 +9767,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 4751.2,
@@ -9886,7 +9886,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 15284.2,
@@ -10005,7 +10005,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 15279.7,
@@ -10124,7 +10124,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 13960.5,
@@ -10244,7 +10244,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 11172.0,
@@ -10363,7 +10363,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 5755.0,
@@ -10482,7 +10482,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 3796.4,
@@ -10600,7 +10600,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 3496.8,
@@ -10718,7 +10718,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 8264.9,
@@ -10836,7 +10836,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 8913.0,
@@ -10955,7 +10955,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 25739.9,
@@ -11073,7 +11073,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 13852.4,
@@ -11191,7 +11191,7 @@
 		[
 
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 52078.5,
@@ -11309,7 +11309,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 3810.6,
@@ -11428,7 +11428,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 5551.7,
@@ -11547,7 +11547,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 17836.9,
@@ -11666,7 +11666,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 12564.1,
@@ -11785,7 +11785,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 6174.3,
@@ -11904,7 +11904,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 16031.4,
@@ -12023,7 +12023,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 6251.5,
@@ -12142,7 +12142,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 7364.7,
@@ -12261,7 +12261,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 10270.3,
@@ -12380,7 +12380,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 4537.0,
@@ -12499,7 +12499,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 4632.8,
@@ -12618,7 +12618,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 11112.8,
@@ -12737,7 +12737,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 9055.5,
@@ -12856,7 +12856,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 17536.2,
@@ -12975,7 +12975,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 21478.3,
@@ -13094,7 +13094,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 13041.3,
@@ -13213,7 +13213,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 20078.7,
@@ -13332,7 +13332,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 15323.9,
@@ -13451,7 +13451,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 7624.8,
@@ -13570,7 +13570,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 20733.3,
@@ -13689,7 +13689,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 7375.2,
@@ -13808,7 +13808,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 6475.9,
@@ -13927,7 +13927,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 10423.2,
@@ -14046,7 +14046,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 11015.2,
@@ -14165,7 +14165,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 13858.1,
@@ -14284,7 +14284,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 18424.6,
@@ -14403,7 +14403,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 13238.5,
@@ -14522,7 +14522,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 12972.2,
@@ -14641,7 +14641,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 7016.2,
@@ -14760,7 +14760,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 18894.6,
@@ -14879,7 +14879,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 5374.0,
@@ -14998,7 +14998,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 7243.7,
@@ -15117,7 +15117,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 25113.0,
@@ -15236,7 +15236,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 13470.2,
@@ -15355,7 +15355,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 16404.1,
@@ -15474,7 +15474,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 11335.8,
@@ -15593,7 +15593,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 12491.8,
@@ -15712,7 +15712,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 10796.8,
@@ -15831,7 +15831,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 11976.3,
@@ -15950,7 +15950,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 16186.1,
@@ -16069,7 +16069,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 9507.2,
@@ -16188,7 +16188,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 11234.4,
@@ -16307,7 +16307,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 17694.9,
@@ -16426,7 +16426,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 22752.7,
@@ -16545,7 +16545,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 4488.0,
@@ -16664,7 +16664,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 8066.7,
@@ -16783,7 +16783,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 21371.6,
@@ -16902,7 +16902,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 7953.0,
@@ -17021,7 +17021,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 13276.9,
@@ -17140,7 +17140,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 12911.0,
@@ -17259,7 +17259,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 9672.2,
@@ -17378,7 +17378,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 23485.3,
@@ -17497,7 +17497,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 4661.4,
@@ -17616,7 +17616,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 15165.1,
@@ -17735,7 +17735,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 13194.2,
@@ -17854,7 +17854,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 7777.3,
@@ -17973,7 +17973,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 8340.0,
@@ -18092,7 +18092,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 17150.9,
@@ -18211,7 +18211,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 12168.3,
@@ -18330,7 +18330,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 10328.4,
@@ -18449,7 +18449,7 @@
 		[
 			"mindcontrol.nii.gz"
 		],
-		"entry_type": "freesurfer",
+		"entry_type": "freesurfer-scatterplot",
 		"metrics": 
 		{
 			"Left-Lateral-Ventricle": 13695.9,
