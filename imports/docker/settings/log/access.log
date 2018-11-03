@@ -1,0 +1,2 @@
+172.17.0.1 - - [03/Jul/2018:15:00:10 +0000] "GET / HTTP/1.1" 401 597 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36" "-"
+172.17.0.1 - - [03/Jul/2018:15:00:11 +0000] "GET / HTTP/1.1" 401 597 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36" "-"

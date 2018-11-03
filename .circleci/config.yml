@@ -1,0 +1,10 @@
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: cd imports/docker && docker build -t shotgunosine/mindcontrol:$CIRCLE_BUILD_NUM-${CIRCLE_SHA1:0:6} -f Dockerfile_services .
+      - run: docker tag shotgunosine/mindcontrol:$CIRCLE_BUILD_NUM-${CIRCLE_SHA1:0:6} shotgunosine/mindcontrol:latest
+      - run: docker push shotgunosine/mindcontrol
