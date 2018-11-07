@@ -78,17 +78,34 @@ render_histogram = function(entry_type){
 render_scatterplot = function(entry_type) {
 	var data, minvalX, maxvalX, minvalY, maxvalY = "";
 	var metric = Session.get("current_"+entry_type);
-	console.log('entr ' + entry_type);
 	if (metric == null) {
-		var all_metrics = Session.get(entry_type+"_metrics");
-		if (all_metrics != null) {
-			Session.set("current_"+entry_type, all_metrics[0]);
-		}
+		// var all_metrics = Session.get(entry_type+"_metrics");
+		// if (all_metrics != null) {
+		// 	Session.set("current_"+entry_type, all_metrics[0]);
+		// }
 	}
+  var all_metrics = Session.get(entry_type+"_metrics");
+  if (all_metrics != null) {
+    Session.set("current_"+entry_type, all_metrics[0]);
+  }
 
 	if (metric != null) {
 		var filter = get_filter(entry_type);
-		Meteor.call("getScatterData", entry_type, metric, filter, function(error, result) {
+		Meteor.call("getScatterData", entry_type, metric, filter, all_metrics, function(error, result) {
+      // console.log('asdf')
+      // console.log(result['xData'])
+      // console.log(result['yData'])
+      // console.log(result['filter'])
+      // for (var i = 0; i < result['xData'].length; i++) {
+      //   console.log('x: ' + result['xData'][i] + ' y: ' + result['yData'][i])
+      // }
+      if (result['xData'].length && result['yData'].length) {
+        do_scatter(result['xData'], result['yData'], "#d3vis_"+entry_type, entry_type)
+        // do_scatter(data, ydata, "#d3vis_"+entry_type, entry_type);
+      } else {
+        console.log('Attempt to clear scatterplot');
+        // TODO: create scatterplot clear
+      }
 			// var data = result["scatterplot"];
 			// if (data.length) {
 			// 	console.log('doscat');
@@ -109,7 +126,6 @@ render_scatterplot = function(entry_type) {
 	// 		var minval
 	// 	})
 	// }
-	do_scatter(data, minvalX, maxvalX, minvalY, maxvalY, "#d3vis_"+entry_type, entry_type);
 }
 
 
@@ -156,6 +172,18 @@ Template.module.events({
  }
 })
 
+Template.module.events({
+ "change #metric-select-scatter": function(event, template){
+     var metric = $(event.currentTarget).val()
+     console.log("metric: ", metric)
+     Session.set("current_"+this.entry_type, metric)
+ },
+ "click .clouder": function(event, template){
+   var cmd = Meteor.settings.public.clouder_cmd
+   Meteor.call("launch_clouder", cmd)
+ }
+})
+
 Template.base.rendered = function(){
   if (!this.rendered){
       this.rendered = true
@@ -171,10 +199,10 @@ Template.base.rendered = function(){
               do_d3_date_histogram(result, "#d3vis_date_"+self.entry_type)
               })
         }
-		else if (self.graph_type == "scatterplot") {
-			// console.log("rendering scatterplot", self.entry_type)
-			render_scatterplot(self.entry_type);
-		}
+    		else if (self.graph_type == "scatterplot") {
+    			// console.log("rendering scatterplot", self.entry_type)
+    			render_scatterplot(self.entry_type);
+    		}
       })
   });
 }

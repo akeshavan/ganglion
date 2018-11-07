@@ -30,7 +30,7 @@ Meteor.methods({
               no_null[metric_name] = {$ne: null}
           }
 
-          //console.log("in the server, the filter is", no_null)
+          console.log("in the server, the filter is", no_null)
 
           var minval = Subjects.find(no_null, {sort: [[metric_name, "ascending"]], limit: 1}).fetch()[0]["metrics"][metric]
           var maxval = Subjects.find(no_null, {sort: [[metric_name, "descending"]], limit: 1}).fetch()[0]["metrics"][metric]
@@ -54,6 +54,7 @@ Meteor.methods({
                 }
 
                 output["maxval"] = maxval*1.05
+                // console.log("OUT: "+output);
                 return output
           }
           else{
@@ -66,37 +67,66 @@ Meteor.methods({
           //{entry_type: "freesurfer"}
       },
 
-	  getScatterData: function(entry_type, metric, filter) {
-		  console.log(filter);
-		  var metric_name = "metrics."+metric; 
-		  console.log(Subjects.find(filter, {sort: [[metric_name, "ascending"]], limit: 1}).fetch()[1]);
+	  getScatterData: function(entry_type, metric, filter, all_metrics) {
+      console.log('getting scatterplot data')
+      // get the corresponding metric
+      if (metric.includes('Left') || metric.includes('Right')) {
+        var side = metric.substr(0, metric.indexOf('-'));
+        if (side.includes('Left')) var otherSide = 'Right';
+        else if (side.includes('Right')) var otherSide = 'Left';
+        var baseMetric = metric.substr(metric.indexOf('-') + 1);
+      } else if (metric.includes('lh') || metric.includes('rh')) {
+        var side = metric.substring(0,1);
+        if (side.includes('lh')) var otherSide = 'rh';
+        else if (side.includes('rh')) var otherSide = 'lh';
+        var baseMetric = metric.substring(2, -1);
+      }
+      // console.log(side);
+      for (var i = 0; i < all_metrics.length; i++) {
+        if (all_metrics[i].includes(baseMetric) && all_metrics[i].includes(otherSide)) {
+          correspondingMetric = all_metrics[i];
+        }
+      }
+		  // console.log(filter);
+		  var metric_name = "metrics." + metric;
+		  // console.log(Subjects.find(filter, {sort: [[metric_name, "ascending"]], limit: 1}).fetch()[1]);
 		  if (Meteor.isServer) {
-			  // console.log("ENTRY " +entry_type);
-			  // console.log('asdjfk;ajf;asjf');
-			  // console.log("SUBJECTS " + Subjects.find({}));
-	  	// 	var no_null = filter;
-		// 	no_null["entry_type"] = entry_type;
-		// 	var metric_name = "metrics."+metric;
-		//
-		// 	if (Object.keys(no_null).indexOf(metric_name) >= 0) {
-		// 		no_null[metric_name]["$ne"] = null;
-		// 	} else {
-		// 		no_null[metric_name] = {$ne: null};
-		// 	}
-		//
-		// 	var data = Subjects.aggregate([{$match: no_null},
-		// 				{$project: {$lowerBound: {$subtract: ["$metrics."+metric,
-		// 						{$mod: ["$metrics."+metric, 20]}]}}},
-		// 				{$group: {_id: "$lowerBound", count: {$sum: 1}}}]);
-		// 	var output = {};
-		// 	output["scatterplot"] = _.sortBy(data, "_id");
-		//
-		// 	return output;
-		// } else {
-		// 	var output = {};
-		// 	output["scatterplot"] = [];
-		// 	return output;
-		}
+        var output = {};
+        var xMetric, yMetric;
+        if (correspondingMetric.includes('Right') || correspondingMetric.includes('rh')) {
+          xMetric = correspondingMetric;
+          yMetric = metric;
+        } else if (correspondingMetric.includes('Left') || correspondingMetric.includes('lh')) {
+          xMetric = metric;
+          yMetric = correspondingMetric;
+        }
+        output['xMetric'] = xMetric;
+        output['yMetric'] = yMetric;
+
+        // get xdata and ydata
+        // console.log(filter);
+        // console.log(Subjects.aggregate([{$match: filter}]));
+        // xFilter = {metrics: xMetric}
+        // output['filter'] = filter
+        xData = Subjects.aggregate([
+          {$match: filter},
+          {$group: {_id: "$metrics."+xMetric, count: {$sum: 1}}}
+        ]);
+        yData = Subjects.aggregate([
+          {$match: filter},
+          {$group: {_id: "$metrics."+yMetric, count: {$sum: 1}}}
+        ])
+        xData = _.sortBy(xData, "_id");
+        yData = _.sortBy(yData, "_id");
+        // get values into simple arrays from json objects
+        output['yData'] = [];
+        output['xData'] = [];
+        for (var i = 0; i < yData.length; i++) {
+          output['yData'].push(yData[i]._id);
+          output['xData'].push(xData[i]._id);
+        }
+        return output;
+  		}
 	  },
 
     get_subject_ids_from_filter: function(filter){
