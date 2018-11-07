@@ -1,7 +1,9 @@
 import "./module_templates.js"
 
 do_scatter = function(xdata, ydata, dom_id, entry_type) {
-			if (d3.select('#d3_scatterplot').empty()) {
+			if (!(d3.select('#d3_scatterplot').empty())) {
+				d3.select('#d3_scatterplot').remove();
+			} else {
 				// data that you want to plot, I've used separate arrays for x and y values
 				// size and margins for the chart
 				var margin = {top: 20, right: 15, bottom: 60, left: 60}

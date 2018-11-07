@@ -78,6 +78,7 @@ render_histogram = function(entry_type){
 render_scatterplot = function(entry_type) {
 	var data, minvalX, maxvalX, minvalY, maxvalY = "";
 	var metric = Session.get("current_"+entry_type);
+  console.log(metric)
 	if (metric == null) {
 		// var all_metrics = Session.get(entry_type+"_metrics");
 		// if (all_metrics != null) {
