@@ -1,11 +1,20 @@
 import "./module_templates.js"
 
+// do_d3_scatterplot()
+
 do_scatter = function(xdata, ydata, dom_id, entry_type) {
-			if (!(d3.select('#d3_scatterplot').empty())) {
-				d3.select('#d3_scatterplot').remove();
-			} else {
+			// if (!(d3.select('#d3_scatterplot').empty())) {
+				// d3.select('#d3_scatterplot').remove();
+			// } else {
 				// data that you want to plot, I've used separate arrays for x and y values
 				// size and margins for the chart
+			// Deps.autorun(function() {
+			// 	if (Deps.currentComputation.firstRun) {
+			// 		console.log('firstRun')
+			// 	} else {
+			// 		console.log('subrun');
+			// 	}
+			// })
 				var margin = {top: 20, right: 15, bottom: 60, left: 60}
 				  , width = 960 - margin.left - margin.right
 				  , height = 500 - margin.top - margin.bottom;
@@ -22,6 +31,7 @@ do_scatter = function(xdata, ydata, dom_id, entry_type) {
 
 				// the chart object, includes all margins
 				var chart = d3.select('.d3scatterplot')
+				// var chart = d3.select('#d3_vis'+entry_type)
 				.append('svg:svg')
 				.attr('width', width + margin.right + margin.left)
 				.attr('height', height + margin.top + margin.bottom)
@@ -65,7 +75,7 @@ do_scatter = function(xdata, ydata, dom_id, entry_type) {
 				      .attr("cx", function (d,i) { return x(xdata[i]); } ) // translate x value
 				      .attr("r", 10) // radius of circle
 				      .style("opacity", 0.6); // opacity of circle
-			}
+			// }
 }
 
 

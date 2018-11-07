@@ -68,64 +68,60 @@ Meteor.methods({
       },
 
 	  getScatterData: function(entry_type, metric, filter, all_metrics) {
-      console.log('getting scatterplot data')
-      // get the corresponding metric
-      if (metric.includes('Left') || metric.includes('Right')) {
-        var side = metric.substr(0, metric.indexOf('-'));
-        if (side.includes('Left')) var otherSide = 'Right';
-        else if (side.includes('Right')) var otherSide = 'Left';
-        var baseMetric = metric.substr(metric.indexOf('-') + 1);
-      } else if (metric.includes('lh') || metric.includes('rh')) {
-        var side = metric.substring(0,1);
-        if (side.includes('lh')) var otherSide = 'rh';
-        else if (side.includes('rh')) var otherSide = 'lh';
-        var baseMetric = metric.substring(2, -1);
-      }
-      // console.log(side);
-      for (var i = 0; i < all_metrics.length; i++) {
-        if (all_metrics[i].includes(baseMetric) && all_metrics[i].includes(otherSide)) {
-          correspondingMetric = all_metrics[i];
-        }
-      }
-		  // console.log(filter);
-		  var metric_name = "metrics." + metric;
-		  // console.log(Subjects.find(filter, {sort: [[metric_name, "ascending"]], limit: 1}).fetch()[1]);
+      	console.log('getting scatterplot data')
 		  if (Meteor.isServer) {
-        var output = {};
-        var xMetric, yMetric;
-        if (correspondingMetric.includes('Right') || correspondingMetric.includes('rh')) {
-          xMetric = correspondingMetric;
-          yMetric = metric;
-        } else if (correspondingMetric.includes('Left') || correspondingMetric.includes('lh')) {
-          xMetric = metric;
-          yMetric = correspondingMetric;
-        }
-        output['xMetric'] = xMetric;
-        output['yMetric'] = yMetric;
+      		// get the corresponding metric
+		      if (metric.includes('Left') || metric.includes('Right')) {
+		        var side = metric.substr(0, metric.indexOf('-'));
+		        if (side.includes('Left')) var otherSide = 'Right';
+		        else if (side.includes('Right')) var otherSide = 'Left';
+		        var baseMetric = metric.substr(metric.indexOf('-') + 1);
+		      } else if (metric.includes('lh') || metric.includes('rh')) {
+		        var side = metric.substring(0,1);
+		        if (side.includes('lh')) var otherSide = 'rh';
+		        else if (side.includes('rh')) var otherSide = 'lh';
+		        var baseMetric = metric.substring(2, -1);
+		      }
+		      // console.log(side);
+		      for (var i = 0; i < all_metrics.length; i++) {
+		        if (all_metrics[i].includes(baseMetric) && all_metrics[i].includes(otherSide)) {
+		          correspondingMetric = all_metrics[i];
+		        }
+		      }
+			  // console.log(filter);
+			  var metric_name = "metrics." + metric;
+			  // console.log(Subjects.find(filter, {sort: [[metric_name, "ascending"]], limit: 1}).fetch()[1]);
 
-        // get xdata and ydata
-        // console.log(filter);
-        // console.log(Subjects.aggregate([{$match: filter}]));
-        // xFilter = {metrics: xMetric}
-        // output['filter'] = filter
-        xData = Subjects.aggregate([
-          {$match: filter},
-          {$group: {_id: "$metrics."+xMetric, count: {$sum: 1}}}
-        ]);
-        yData = Subjects.aggregate([
-          {$match: filter},
-          {$group: {_id: "$metrics."+yMetric, count: {$sum: 1}}}
-        ])
-        xData = _.sortBy(xData, "_id");
-        yData = _.sortBy(yData, "_id");
-        // get values into simple arrays from json objects
-        output['yData'] = [];
-        output['xData'] = [];
-        for (var i = 0; i < yData.length; i++) {
-          output['yData'].push(yData[i]._id);
-          output['xData'].push(xData[i]._id);
-        }
-        return output;
+	        var output = {};
+	        var xMetric, yMetric;
+	        if (correspondingMetric.includes('Right') || correspondingMetric.includes('rh')) {
+	          xMetric = correspondingMetric;
+	          yMetric = metric;
+	        } else if (correspondingMetric.includes('Left') || correspondingMetric.includes('lh')) {
+	          xMetric = metric;
+	          yMetric = correspondingMetric;
+	        }
+	        output['xMetric'] = xMetric;
+	        output['yMetric'] = yMetric;
+
+	        xData = Subjects.aggregate([
+	          {$match: filter},
+	          {$group: {_id: "$metrics."+xMetric, count: {$sum: 1}}}
+	        ]);
+	        yData = Subjects.aggregate([
+	          {$match: filter},
+	          {$group: {_id: "$metrics."+yMetric, count: {$sum: 1}}}
+	        ])
+	        xData = _.sortBy(xData, "_id");
+	        yData = _.sortBy(yData, "_id");
+	        // get values into simple arrays from json objects
+	        output['yData'] = [];
+	        output['xData'] = [];
+	        for (var i = 0; i < yData.length; i++) {
+	          output['yData'].push(yData[i]._id);
+	          output['xData'].push(xData[i]._id);
+	        }
+	        return output;
   		}
 	  },
 

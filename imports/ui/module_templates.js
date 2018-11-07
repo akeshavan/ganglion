@@ -167,17 +167,10 @@ Template.module.events({
      console.log("metric: ", metric)
      Session.set("current_"+this.entry_type, metric)
  },
- "click .clouder": function(event, template){
-   var cmd = Meteor.settings.public.clouder_cmd
-   Meteor.call("launch_clouder", cmd)
- }
-})
-
-Template.module.events({
- "change #metric-select-scatter": function(event, template){
-     var metric = $(event.currentTarget).val()
-     console.log("metric: ", metric)
-     Session.set("current_"+this.entry_type, metric)
+ "change #metric-scatter-select": function(event, template){
+	 var metric = $(event.currentTarget).val()
+	 console.log("metric: ", metric)
+	 Session.set("current_"+this.entry_type, metric)
  },
  "click .clouder": function(event, template){
    var cmd = Meteor.settings.public.clouder_cmd
@@ -189,8 +182,12 @@ Template.base.rendered = function(){
   if (!this.rendered){
       this.rendered = true
   }
-
+  // TODO: this var is to stop the duplicating scatterplot, for some reason,
+  // autorun wants to do the scatterplot twice every time, reverting back to the
+  // original metric
   this.autorun(function() {
+	  var scatterRun = 0;
+	  console.log('asdfadsfasdfasdf')
       Meteor.settings.public.modules.forEach(function(self, idx, arr){
         if (self.graph_type == "histogram"){
           render_histogram(self.entry_type)
@@ -200,10 +197,15 @@ Template.base.rendered = function(){
               do_d3_date_histogram(result, "#d3vis_date_"+self.entry_type)
               })
         }
-    		else if (self.graph_type == "scatterplot") {
-    			// console.log("rendering scatterplot", self.entry_type)
-    			render_scatterplot(self.entry_type);
-    		}
+		else if (self.graph_type == "scatterplot") {
+			if (scatterRun == 0) {
+				console.log("rendering scatterplot")
+				render_scatterplot(self.entry_type);
+				scatterRun = 1;
+			} else if (scatterRun == 1) {
+				console.log('asdfasdf')
+			}
+		}
       })
   });
 }
