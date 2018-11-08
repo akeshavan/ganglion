@@ -77,18 +77,20 @@ render_histogram = function(entry_type){
 
 render_scatterplot = function(entry_type) {
 	var data, minvalX, maxvalX, minvalY, maxvalY = "";
-	var metric = Session.get("current_"+entry_type);
+	var metric = Session.get("scatter_"+entry_type);
   console.log(metric)
-	if (metric == null) {
-		// var all_metrics = Session.get(entry_type+"_metrics");
-		// if (all_metrics != null) {
-		// 	Session.set("current_"+entry_type, all_metrics[0]);
-		// }
-	}
   var all_metrics = Session.get(entry_type+"_metrics");
-  if (all_metrics != null) {
-    Session.set("current_"+entry_type, all_metrics[0]);
-  }
+
+	if (metric == null) {
+		if (all_metrics != null) {
+			Session.set("scatter_"+entry_type, all_metrics[0]);
+		}
+	}
+  // var all_metrics = Session.get(entry_type+"_metrics");
+  // OFFENDING LINE?
+  // if (all_metrics != null) {
+  //   Session.set("scatter_"+entry_type, all_metrics[0]);
+  // }
 
 	if (metric != null) {
 		var filter = get_filter(entry_type);
@@ -158,7 +160,10 @@ Template.module.helpers({
       },
   currentMetric: function(){
           return Session.get("current_"+this.entry_type)
-      }
+      },
+  scatterMetric: function() {
+    return Session.get("scatter_"+this.entry_type);
+  }
 })
 
 Template.module.events({
@@ -170,7 +175,7 @@ Template.module.events({
  "change #metric-scatter-select": function(event, template){
 	 var metric = $(event.currentTarget).val()
 	 console.log("metric: ", metric)
-	 Session.set("current_"+this.entry_type, metric)
+	 Session.set("scatter_"+this.entry_type, metric)
  },
  "click .clouder": function(event, template){
    var cmd = Meteor.settings.public.clouder_cmd
@@ -188,24 +193,20 @@ Template.base.rendered = function(){
   this.autorun(function() {
 	  var scatterRun = 0;
 	  console.log('asdfadsfasdfasdf')
+    // console.log('entry type ' + entry_type);
       Meteor.settings.public.modules.forEach(function(self, idx, arr){
         if (self.graph_type == "histogram"){
           render_histogram(self.entry_type)
         }
         else if (self.graph_type == "datehist") {
           Meteor.call("getDateHist", function(error, result){
-              do_d3_date_histogram(result, "#d3vis_date_"+self.entry_type)
-              })
+            do_d3_date_histogram(result, "#d3vis_date_"+self.entry_type)
+          })
         }
-		else if (self.graph_type == "scatterplot") {
-			if (scatterRun == 0) {
-				console.log("rendering scatterplot")
-				render_scatterplot(self.entry_type);
-				scatterRun = 1;
-			} else if (scatterRun == 1) {
-				console.log('asdfasdf')
-			}
-		}
+    		else if (self.graph_type == "scatterplot") {
+  				console.log("rendering scatterplot")
+  				render_scatterplot(self.entry_type);
+    		}
       })
   });
 }

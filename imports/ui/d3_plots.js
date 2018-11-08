@@ -3,9 +3,10 @@ import "./module_templates.js"
 // do_d3_scatterplot()
 
 do_scatter = function(xdata, ydata, dom_id, entry_type) {
-			// if (!(d3.select('#d3_scatterplot').empty())) {
-				// d3.select('#d3_scatterplot').remove();
-			// } else {
+			if (!(d3.select('#d3_scatterplot').empty())) {
+				d3.select('#d3_scatterplot').remove();
+			}
+			// else {
 				// data that you want to plot, I've used separate arrays for x and y values
 				// size and margins for the chart
 			// Deps.autorun(function() {
