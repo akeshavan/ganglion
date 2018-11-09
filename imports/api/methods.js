@@ -70,6 +70,7 @@ Meteor.methods({
 	  getScatterData: function(entry_type, metric, filter, all_metrics) {
       	console.log('getting scatterplot data')
 		  if (Meteor.isServer) {
+	  	        var output = {};
       		// get the corresponding metric
 		      if (metric.includes('Left') || metric.includes('Right')) {
 		        var side = metric.substr(0, metric.indexOf('-'));
@@ -77,11 +78,13 @@ Meteor.methods({
 		        else if (side.includes('Right')) var otherSide = 'Left';
 		        var baseMetric = metric.substr(metric.indexOf('-') + 1);
 		      } else if (metric.includes('lh') || metric.includes('rh')) {
-		        var side = metric.substring(0,1);
+		        var side = metric.substring(0,2);
 		        if (side.includes('lh')) var otherSide = 'rh';
 		        else if (side.includes('rh')) var otherSide = 'lh';
-		        var baseMetric = metric.substring(2, -1);
+		        var baseMetric = metric.substring(2);
 		      }
+			  output['side'] = side;
+			  output['otherside'] = otherSide;
 		      // console.log(side);
 		      for (var i = 0; i < all_metrics.length; i++) {
 		        if (all_metrics[i].includes(baseMetric) && all_metrics[i].includes(otherSide)) {
@@ -91,36 +94,74 @@ Meteor.methods({
 			  // console.log(filter);
 			  var metric_name = "metrics." + metric;
 			  // console.log(Subjects.find(filter, {sort: [[metric_name, "ascending"]], limit: 1}).fetch()[1]);
-	        var output = {};
+
 	        var xMetric, yMetric;
 	        if (correspondingMetric.includes('Right') || correspondingMetric.includes('rh')) {
-	          xMetric = correspondingMetric;
-	          yMetric = metric;
+				if (correspondingMetric.includes('rh')) {
+					xMetric = correspondingMetric + "_thk";
+					yMetric = metric + "_thk";
+				} else {
+					xMetric = correspondingMetric;
+					yMetric = metric;
+				}
 	        } else if (correspondingMetric.includes('Left') || correspondingMetric.includes('lh')) {
-	          xMetric = metric;
-	          yMetric = correspondingMetric;
+			  if (correspondingMetric.includes('lh')) {
+				  xMetric = metric + "_thk";
+				  yMetric = correspondingMetric + "_thk";
+			  } else {
+				  xMetric = metric;
+				  yMetric = correspondingMetric;
+			  }
 	        }
+			// if (correspondingMetric.includes('Right') || correspondingMetric.includes('rh')) {
+			//   xMetric = correspondingMetric;
+			//   yMetric = metric;
+			// } else if (correspondingMetric.includes('Left') || correspondingMetric.includes('lh')) {
+			//   xMetric = metric;
+			//   yMetric = correspondingMetric;
+			// }
 	        output['xMetric'] = xMetric;
 	        output['yMetric'] = yMetric;
 
-	        xData = Subjects.aggregate([
-	          {$match: filter},
-	          {$group: {_id: "$metrics."+xMetric, count: {$sum: 1}}}
-	        ]);
-	        yData = Subjects.aggregate([
-	          {$match: filter},
-	          {$group: {_id: "$metrics."+yMetric, count: {$sum: 1}}}
-	        ])
-          output['test'] = yData; 
-	        xData = _.sortBy(xData, "_id");
-	        yData = _.sortBy(yData, "_id");
+	        // xData = Subjects.aggregate([
+	        //   {$match: filter},
+	        //   {
+			// 	  $group: {
+			// 	  	_id:null, array:{$push:"$_id"}}
+			// 	},
+			// 	{
+			// 		$project: {array:true,_id:false}
+			// 	}
+	        // ]);
+			data = Subjects.aggregate([
+			  {$match: filter},
+			  {$group: {_id: "$metrics", count: {$sum: 1}}}
+			])
+			output['data'] = data; 
+
+			// xData = Subjects.aggregate([
+			//   {$match: filter},
+			//   {$group: {_id: "$metrics."+xMetric, count: {$sum: 1}}}
+			// ])
+	        // yData = Subjects.aggregate([
+	        //   {$match: filter},
+	        //   {$group: {_id: "$metrics."+yMetric, count: {$sum: 1}}}
+	        // ])
+          // output['test'] = yData;
+	        // xData = _.sortBy(xData, "_id");
+	        // yData = _.sortBy(yData, "_id");
 	        // get values into simple arrays from json objects
-	        output['yData'] = [];
-	        output['xData'] = [];
-	        for (var i = 0; i < yData.length; i++) {
-	          output['yData'].push(yData[i]._id);
-	          output['xData'].push(xData[i]._id);
-	        }
+	        // output['yData'] = [];
+	        // output['xData'] = [];
+			// // output['data'] = []
+	        // for (var i = 0; i < yData.length; i++) {
+			//   // pair = [xData[i]._id, yData[i]._id];
+	        //   // output['data'].push(pair);
+			//   output['mets'] = xData[i];
+			//   output['xData'].push(xData[i]._id);
+	        //   output['yData'].push(yData[i]._id);
+	        // }
+			// output['left'] = xData[0]["Left-Lateral-Ventricle"];
 	        return output;
   		}
 	  },

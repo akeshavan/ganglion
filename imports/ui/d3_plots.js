@@ -101,7 +101,50 @@ do_scatter = function(xdata, ydata, xMetric, yMetric, dom_id, entry_type) {
 					var currentColor = "black"
 					// return function() {
 						currentColor = currentColor == "black" ? "ffd333" : "black";
-        		d3.select(this).style("fill", currentColor).style('opacity', '1');
+	        		d3.select(this).style("fill", currentColor).style('opacity', '1');
+
+					// change table display
+	                // console.log(d)
+	                // var currSelect = Session.get("globalSelector")
+	                // if (Object.keys(currSelect).indexOf("demographic") < 0) {
+	                //     currSelect["demographic"] = {}
+	                // }
+	                // currSelect["demographic"]["metrics.DCM_StudyDate"] = parseInt(d)
+	                // Session.set("globalSelector", currSelect)
+					//
+	                // Meteor.call("get_subject_ids_from_filter", currSelect["demographic"], function(error, result){
+	                //     console.log("result from get subject ids from filter is", result)
+	                //     var ss = Session.get("subjectSelector")
+	                //     ss["subject_id"]["$in"] = result
+	                //     Session.set("subjectSelector", ss)
+	                // })
+					var xkey = "metrics." + xMetric;
+					var ykey = "metrics." + yMetric;
+					var gSelector = Session.get("globalSelector")
+					if (Object.keys(gSelector).indexOf(entry_type) < 0 ) {
+						gSelector[entry_type] = {}
+					}
+					// $lte and $gte (<= and >=)
+					// console.log('gselect');
+					console.log(gSelector)
+					// TODO: should we also make this incorporate ydata too for
+					// complete accuracy? How?
+					// gSelector[entry_type][ykey] = {$eq: ydata[i]}
+					gSelector[entry_type][xkey] = {$eq: xdata[i]}
+					Session.set("globalSelector", gSelector)
+
+					var filter = get_filter(entry_type)
+					// filter[ykey] = {$eq: ydata[i]}
+					filter[xkey] = {$eq: xdata[i]}
+
+									// console.log('get_subject_ids_from_filter stuff: ')
+									// console.log(filter)
+					Meteor.call("get_subject_ids_from_filter", filter, function(error, result){
+						//console.log("result from get subject ids from filter is", result)
+						var ss = Session.get("subjectSelector")
+						ss["subject_id"]["$in"] = result
+						Session.set("subjectSelector", ss)
+					})
 					// }
 						// d3.select(this).style("fill", currentColor)
 						// d3.select(this).style("fill", "red")
@@ -449,6 +492,8 @@ d3barplot = function(window, data, formatCount, metric, entry_type){
                     gSelector[entry_type] = {}
                 }
                 gSelector[entry_type][newkey] = {$gte: extent0[0], $lte: extent0[1]}
+				console.log('gselecthist')
+				console.log(gSelector)
                 Session.set("globalSelector", gSelector)
 
                 var filter = get_filter(entry_type)

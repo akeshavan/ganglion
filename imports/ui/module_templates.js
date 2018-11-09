@@ -57,19 +57,27 @@ render_histogram = function(entry_type){
         var filter = get_filter(entry_type)
         //console.log("filter is", filter)
         Meteor.call("getHistogramData", entry_type, metric, 20, filter, function(error, result){
-
-        var data = result["histogram"]
-        var minval = result["minval"]
-        var maxval = result["maxval"]
-        if (data.length){
-            do_d3_histogram(data, minval, maxval, metric, "#d3vis_"+entry_type, entry_type)
-        }
-        else{
-            console.log("attempt to clear histogram here")
-            clear_histogram("#d3vis_"+entry_type)
-        }
-        });
+	        var data = result["histogram"]
+	        var minval = result["minval"]
+	        var maxval = result["maxval"]
+	        if (data.length){
+	            do_d3_histogram(data, minval, maxval, metric, "#d3vis_"+entry_type, entry_type)
+	        }
+	        else{
+	            console.log("attempt to clear histogram here")
+	            clear_histogram("#d3vis_"+entry_type)
+	        }
+    	});
     }
+}
+
+// gets the nth column from an matrix
+function getColumn(matrix, n) {
+	var col = [];
+	for (var i = 0; i < matrix.length; i++) {
+	  col.push(matrix[i][n]);
+	}
+	return col;
 }
 
 render_scatterplot = function(entry_type) {
@@ -91,17 +99,25 @@ render_scatterplot = function(entry_type) {
 
 	if (metric != null) {
 		var filter = get_filter(entry_type);
-    console.log('met: ' + metric)
 		Meteor.call("getScatterData", entry_type, metric, filter, all_metrics, function(error, result) {
-      if (result['xData'].length && result['yData'].length) {
-        console.log(result['test'])
-        console.log(result['xMetric'])
-        do_scatter(result['xData'], result['yData'], result['xMetric'], result['yMetric'], "#d3vis_"+entry_type, entry_type)
-        // do_scatter(data, ydata, "#d3vis_"+entry_type, entry_type);
-      } else {
-        console.log('Attempt to clear scatterplot');
-        // TODO: create scatterplot clear
-      }
+		  var metricPairs = [];
+		  for (var i = 0; i < result['data'].length; i++) {
+			 var xMetric = result['data'][i]._id[result['xMetric']];
+			 var yMetric = result['data'][i]._id[result['yMetric']];
+		  	 var pair = [xMetric, yMetric];
+			 metricPairs.push(pair);
+		  }
+		  console.log(metricPairs);
+	      if (metricPairs.length) {
+			xdata = getColumn(metricPairs, 0);
+			ydata = getColumn(metricPairs, 1);
+			console.log(xdata)
+			console.log(ydata)
+	        do_scatter(xdata, ydata, result['xMetric'], result['yMetric'], "#d3vis_"+entry_type, entry_type)
+	      } else {
+	        console.log('Attempt to clear scatterplot');
+	        // TODO: create scatterplot clear
+	      }
 		});
 	}
 }
