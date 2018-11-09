@@ -2,81 +2,202 @@ import "./module_templates.js"
 
 // do_d3_scatterplot()
 
-do_scatter = function(xdata, ydata, dom_id, entry_type) {
-			if (!(d3.select('#d3_scatterplot').empty())) {
-				d3.select('#d3_scatterplot').remove();
-			}
-			// else {
-				// data that you want to plot, I've used separate arrays for x and y values
-				// size and margins for the chart
-			// Deps.autorun(function() {
-			// 	if (Deps.currentComputation.firstRun) {
-			// 		console.log('firstRun')
-			// 	} else {
-			// 		console.log('subrun');
-			// 	}
-			// })
-				var margin = {top: 20, right: 15, bottom: 60, left: 60}
-				  , width = 960 - margin.left - margin.right
-				  , height = 500 - margin.top - margin.bottom;
+do_scatter = function(xdata, ydata, xMetric, yMetric, dom_id, entry_type) {
+	if (!(d3.select('#d3_scatterplot').empty())) {
+		d3.select('#d3_scatterplot').remove();
+	}
+	var margin = {top: 20, right: 10, bottom: 60, left: 100}
+	  , width = 960 - margin.left - margin.right
+	  , height = 500 - margin.top - margin.bottom;
 
-				// x and y scales, I've used linear here but there are other options
-				// the scales translate data values to pixel values for you
-				var x = d3.scale.linear()
-				          .domain([0, d3.max(xdata)])  // the range of the values to plot
-				          .range([ 0, width ]);        // the pixel range of the x-axis
+	// x and y scales, I've used linear here but there are other options
+	// the scales translate data values to pixel values for you
+	var x = d3.scale.linear()
+	          .domain([0, d3.max(xdata)])  // the range of the values to plot
+	          .range([ 0, width ]);        // the pixel range of the x-axis
 
-				var y = d3.scale.linear()
-				          .domain([0, d3.max(ydata)])
-				          .range([ height, 0 ]);
+	var y = d3.scale.linear()
+	          .domain([0, d3.max(ydata)])
+	          .range([ height, 0 ]);
 
-				// the chart object, includes all margins
-				var chart = d3.select('.d3scatterplot')
-				// var chart = d3.select('#d3_vis'+entry_type)
-				.append('svg:svg')
-				.attr('width', width + margin.right + margin.left)
-				.attr('height', height + margin.top + margin.bottom)
-				.attr('class', 'chart')
-				.attr('id', 'd3_scatterplot')
+	// the chart object, includes all margins
+	var chart = d3.select('.d3scatterplot')
+		// .classed("svg-container", true)
+		// var chart = d3.select('#d3_vis'+entry_type)
+		.append('svg:svg')
+		//responsive SVG needs these 2 attributes and no width and height attr
+    // .attr("preserveAspectRatio", "xMinYMin meet")
+	    // .attr("viewBox", "0 0 1000 1000")
+	   //class to make it responsive
+    // .classed("svg-content-responsive", true)
+		.attr('width', width + margin.right + margin.left)
+		.attr('height', height + margin.top + margin.bottom)
+		// .attr('class', 'chart')
+		.attr('id', 'd3_scatterplot')
 
-				// the main object where the chart and axis will be drawn
-				var main = chart.append('g')
-				.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-				.attr('width', width)
-				.attr('height', height)
-				.attr('class', 'main')
+	// the main object where the chart and axis will be drawn
+	var main = chart.append('g')
+		.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+		.attr('width', width)
+		.attr('height', height)
+		.attr('class', 'main')
 
-				// draw the x axis
-				var xAxis = d3.svg.axis()
-				.scale(x)
-				.orient('bottom');
+	// draw the x axis
+	var xAxis = d3.svg.axis()
+		.scale(x)
+		.orient('bottom');
 
-				main.append('g')
-				.attr('transform', 'translate(0,' + height + ')')
-				.attr('class', 'main axis date')
-				.call(xAxis);
+	main.append('g')
+		.attr('transform', 'translate(0,' + height + ')')
+		.attr('class', 'main axis date')
+		.call(xAxis);
 
-				// draw the y axis
-				var yAxis = d3.svg.axis()
-				.scale(y)
-				.orient('left');
+	// x label
+	main.append("text")
+		.attr("x", 460)
+		.attr("y",  460)
+		.style("text-anchor", "middle")
+		.text(xMetric);
 
-				main.append('g')
-				.attr('transform', 'translate(0,0)')
-				.attr('class', 'main axis date')
-				.call(yAxis);
+	// draw the y axis
+	var yAxis = d3.svg.axis()
+		.scale(y)
+		.orient('left');
 
-				// draw the graph object
-				var g = main.append("svg:g");
+	main.append('g')
+		.attr('transform', 'translate(0,0)')
+		.attr('class', 'main axis date')
+		.call(yAxis);
 
-				g.selectAll("scatter-dots")
-				  .data(ydata)  // using the values in the ydata array
-				  .enter().append("svg:circle")  // create a new circle for each value
-				      .attr("cy", function (d) { return y(d); } ) // translate y value to a pixel
-				      .attr("cx", function (d,i) { return x(xdata[i]); } ) // translate x value
-				      .attr("r", 10) // radius of circle
-				      .style("opacity", 0.6); // opacity of circle
-			// }
+	// y label
+	main.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x",0 - (height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text(yMetric);
+
+	// draw the graph object
+	var g = main.append("svg:g");
+
+	var tooltip = d3.select("body")
+    .append("div")
+    .style("position", "absolute")
+    .style("z-index", "10")
+    .style("visibility", "hidden")
+    .text("a simple tooltip");
+
+	g.selectAll("scatter-dots")
+	  .data(ydata)  // using the values in the ydata array
+	  .enter().append("svg:circle")  // create a new circle for each value
+	      .attr("cy", function (d) { return y(d); } ) // translate y value to a pixel
+	      .attr("cx", function (d,i) { return x(xdata[i]); } ) // translate x value
+	      .attr("r", 10) // radius of circle
+	      .style("opacity", 0.6) // opacity of circle
+				.attr("class", "scatter-dot-hover")
+				.on("click", function(d, i) {
+					// console.log('FILL: ' + d3.select(this).style("fill"))
+					var currentColor = "black"
+					// return function() {
+						currentColor = currentColor == "black" ? "ffd333" : "black";
+        		d3.select(this).style("fill", currentColor).style('opacity', '1');
+					// }
+						// d3.select(this).style("fill", currentColor)
+						// d3.select(this).style("fill", "red")
+					// TODO: call function to update table
+				})
+				.on("mouseover", function(d,i) {
+					// d3.select(this).style("fill", "red")
+					return tooltip.style("visibility", "visible").style("color", "red").text(d + ", " + xdata[i]);
+				})
+				.on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+				.on("mouseout", function(){
+					// d3.select(this).style("fill", "black")
+					return tooltip.style("visibility", "hidden");
+				})
+
+	// var brush = d3.main.brush()
+	// 		.x(window.d3vis.x)
+	// 		.extent([_.min(xdata), _.max(xdata)])
+	// 		.on("brush", brushed)
+	// 		.on("brushend", brushend)
+	//
+	// var gBrush = window.d3vis.main.append("g")
+	// 		.attr("class", "brush")
+	// 		.call(brush);
+	//
+	// gBrush.selectAll("scatter-dots")
+	// 		.attr("height", window.d3vis.height)
+	// 		.on("click", function(d){
+	// 				d3.event.stopPropagation();
+	// 				console.log("clicked brush dot", d)})
+	//
+	//
+	// function brushed() {
+	// 	var extent0 = brush.extent()
+	// 			//extent1;
+	//
+	// 	//console.log(d3.event.mode)
+	//
+	//
+	//
+	// 	// if dragging, preserve the width of the extent
+	// 	if (d3.event.mode === "move") {
+	// 					//console.log("moving")
+	// 	}
+	//
+	// 	// otherwise, if resizing, round both dates
+	// 	else {
+	// 		extent1 = extent0//.map(d3.time.day.round);
+	// 		//console.log("extending")
+	// 		// if empty when rounded, use floor & ceil instead
+	// 		/*if (extent1[0] >= extent1[1]) {
+	// 			extent1[0] = d3.time.day.floor(extent0[0]);
+	// 			extent1[1] = d3.time.day.ceil(extent0[1]);
+	// 		}*/
+	// 	}
+	//
+	// 	//d3.select(this).call(brush.extent(extent1));
+	// }
+	//
+	// function brushend() {
+	// 	var extent0 = brush.extent()
+	//
+	// 	if (extent0[1] - extent0[0]){
+	//
+	// 			d3.selectAll(".brush").call(brush.clear());
+	// 			var newkey = "metrics."+metric
+	//
+	// 			var gSelector = Session.get("globalSelector")
+	// 			if (Object.keys(gSelector).indexOf(entry_type) < 0 ){
+	// 					gSelector[entry_type] = {}
+	// 			}
+	// 			gSelector[entry_type][newkey] = {$gte: extent0[0], $lte: extent0[1]}
+	// 			Session.set("globalSelector", gSelector)
+	// 			/*
+	// 			var fs_and_subs = {}
+	// 			fs_and_subs[entry_type] = gSelector[entry_type]
+	//
+	// 			var subselect = Session.get("subjectSelector")
+	//
+	// 			if (subselect["subject_id"]["$in"].length){
+	// 					fs_and_subs["subject_id"] = subselect["subject_id"]
+	// 			}*/
+	//
+	// 			var filter = get_filter(entry_type)
+	// 			filter[newkey] = {$gte: extent0[0], $lte: extent0[1]}
+	//
+	// 			Meteor.call("get_subject_ids_from_filter", filter, function(error, result){
+	// 					//console.log("result from get subject ids from filter is", result)
+	// 					var ss = Session.get("subjectSelector")
+	// 					ss["subject_id"]["$in"] = result
+	// 					Session.set("subjectSelector", ss)
+	// 			})
+	// 	}
+	// 		console.log("ended brushing scatter", extent0)
+	// }
+
 }
 
 
@@ -86,8 +207,8 @@ do_d3_date_histogram = function (result, dom_id) {
     _.defer(function () {
       // Use this as a global variable
       window.d3vis = {}
-      //d3.select(dom_id).selectAll("rect").data([]).exit().remove()
-      //d3.select(dom_id).selectAll("text").data([]).exit().remove()
+      d3.select(dom_id).selectAll("rect").data([]).exit().remove()
+      d3.select(dom_id).selectAll("text").data([]).exit().remove()
       d3.select(dom_id).selectAll("svg").data([]).exit().remove("svg")
       Deps.autorun(function () {
 
@@ -309,18 +430,9 @@ d3barplot = function(window, data, formatCount, metric, entry_type){
                   //console.log("moving")
           }
 
-          // otherwise, if resizing, round both dates
           else {
-            extent1 = extent0//.map(d3.time.day.round);
-            //console.log("extending")
-            // if empty when rounded, use floor & ceil instead
-            /*if (extent1[0] >= extent1[1]) {
-              extent1[0] = d3.time.day.floor(extent0[0]);
-              extent1[1] = d3.time.day.ceil(extent0[1]);
-            }*/
+            extent1 = extent0
           }
-
-          //d3.select(this).call(brush.extent(extent1));
         }
 
         function brushend(){
@@ -338,19 +450,12 @@ d3barplot = function(window, data, formatCount, metric, entry_type){
                 }
                 gSelector[entry_type][newkey] = {$gte: extent0[0], $lte: extent0[1]}
                 Session.set("globalSelector", gSelector)
-                /*
-                var fs_and_subs = {}
-                fs_and_subs[entry_type] = gSelector[entry_type]
-
-                var subselect = Session.get("subjectSelector")
-
-                if (subselect["subject_id"]["$in"].length){
-                    fs_and_subs["subject_id"] = subselect["subject_id"]
-                }*/
 
                 var filter = get_filter(entry_type)
                 filter[newkey] = {$gte: extent0[0], $lte: extent0[1]}
 
+								console.log('get_subject_ids_from_filter stuff: ')
+								console.log(filter)
                 Meteor.call("get_subject_ids_from_filter", filter, function(error, result){
                     //console.log("result from get subject ids from filter is", result)
                     var ss = Session.get("subjectSelector")
@@ -419,7 +524,6 @@ do_d3_histogram = function (values, minval, maxval, metric, dom_id, entry_type) 
                 .attr("transform", "translate(0," + window.d3vis.height + ")")
           //     .call(window.d3vis.xAxis);
            }
-
 
         //var values = get_histogram(fs_tables, metric, bins)
         window.d3vis.x.domain([minval, maxval]);

@@ -51,7 +51,6 @@ render_histogram = function(entry_type){
         if (all_metrics != null){
             Session.set("current_"+entry_type, all_metrics[0])
         }
-
     }
 
     if (metric != null){
@@ -69,8 +68,6 @@ render_histogram = function(entry_type){
             console.log("attempt to clear histogram here")
             clear_histogram("#d3vis_"+entry_type)
         }
-
-
         });
     }
 }
@@ -94,43 +91,20 @@ render_scatterplot = function(entry_type) {
 
 	if (metric != null) {
 		var filter = get_filter(entry_type);
+    console.log('met: ' + metric)
 		Meteor.call("getScatterData", entry_type, metric, filter, all_metrics, function(error, result) {
-      // console.log('asdf')
-      // console.log(result['xData'])
-      // console.log(result['yData'])
-      // console.log(result['filter'])
-      // for (var i = 0; i < result['xData'].length; i++) {
-      //   console.log('x: ' + result['xData'][i] + ' y: ' + result['yData'][i])
-      // }
       if (result['xData'].length && result['yData'].length) {
-        do_scatter(result['xData'], result['yData'], "#d3vis_"+entry_type, entry_type)
+        console.log(result['test'])
+        console.log(result['xMetric'])
+        do_scatter(result['xData'], result['yData'], result['xMetric'], result['yMetric'], "#d3vis_"+entry_type, entry_type)
         // do_scatter(data, ydata, "#d3vis_"+entry_type, entry_type);
       } else {
         console.log('Attempt to clear scatterplot');
         // TODO: create scatterplot clear
       }
-			// var data = result["scatterplot"];
-			// if (data.length) {
-			// 	console.log('doscat');
-			// 	do_scatter(data, minvalX, maxvalX, minvalY, maxvalY, "#d3vis_"+entry_type, entry_type);
-			// 	// do_scatter()
-			// } else {
-			// 	// TODO: clear scatter
-			// }
 		});
 	}
-	// console.log("ASDF " + metric);
-	// console.log('ALL' + all_metrics);
-	//
-	// if (metric != null) {
-	// 	var filter = get_filter(entry_type);
-	// 	Meteor.call("getScatterData", entry_type, metric, 20, filter, function(error, result) {
-	// 		var data = result["scatterplot"];
-	// 		var minval
-	// 	})
-	// }
 }
-
 
 Template.base.helpers({
   modules: function(){
@@ -187,30 +161,24 @@ Template.base.rendered = function(){
   if (!this.rendered){
       this.rendered = true
   }
-  // TODO: this var is to stop the duplicating scatterplot, for some reason,
-  // autorun wants to do the scatterplot twice every time, reverting back to the
-  // original metric
+
   this.autorun(function() {
-	  var scatterRun = 0;
-	  console.log('asdfadsfasdfasdf')
-    // console.log('entry type ' + entry_type);
-      Meteor.settings.public.modules.forEach(function(self, idx, arr){
-        if (self.graph_type == "histogram"){
-          render_histogram(self.entry_type)
-        }
-        else if (self.graph_type == "datehist") {
-          Meteor.call("getDateHist", function(error, result){
-            do_d3_date_histogram(result, "#d3vis_date_"+self.entry_type)
-          })
-        }
-    		else if (self.graph_type == "scatterplot") {
-  				console.log("rendering scatterplot")
-  				render_scatterplot(self.entry_type);
-    		}
-      })
+    Meteor.settings.public.modules.forEach(function(self, idx, arr){
+      if (self.graph_type == "histogram"){
+        render_histogram(self.entry_type)
+      }
+      else if (self.graph_type == "datehist") {
+        Meteor.call("getDateHist", function(error, result){
+          do_d3_date_histogram(result, "#d3vis_date_"+self.entry_type)
+        })
+      }
+  		else if (self.graph_type == "scatterplot") {
+				console.log("rendering scatterplot")
+				render_scatterplot(self.entry_type);
+  		}
+    })
   });
 }
-
 
 Template.body_sidebar.helpers({
   modules: function(){

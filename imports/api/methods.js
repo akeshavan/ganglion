@@ -91,7 +91,6 @@ Meteor.methods({
 			  // console.log(filter);
 			  var metric_name = "metrics." + metric;
 			  // console.log(Subjects.find(filter, {sort: [[metric_name, "ascending"]], limit: 1}).fetch()[1]);
-
 	        var output = {};
 	        var xMetric, yMetric;
 	        if (correspondingMetric.includes('Right') || correspondingMetric.includes('rh')) {
@@ -112,6 +111,7 @@ Meteor.methods({
 	          {$match: filter},
 	          {$group: {_id: "$metrics."+yMetric, count: {$sum: 1}}}
 	        ])
+          output['test'] = yData; 
 	        xData = _.sortBy(xData, "_id");
 	        yData = _.sortBy(yData, "_id");
 	        // get values into simple arrays from json objects
