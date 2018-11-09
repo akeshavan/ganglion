@@ -2,7 +2,7 @@ import "./module_templates.js"
 
 // do_d3_scatterplot()
 
-do_scatter = function(xdata, ydata, xMetric, yMetric, dom_id, entry_type) {
+do_scatter = function(xdata, ydata, pointNames, xMetric, yMetric, dom_id, entry_type) {
 	if (!(d3.select('#d3_scatterplot').empty())) {
 		d3.select('#d3_scatterplot').remove();
 	}
@@ -97,27 +97,9 @@ do_scatter = function(xdata, ydata, xMetric, yMetric, dom_id, entry_type) {
 	      .style("opacity", 0.6) // opacity of circle
 				.attr("class", "scatter-dot-hover")
 				.on("click", function(d, i) {
-					// console.log('FILL: ' + d3.select(this).style("fill"))
-					var currentColor = "black"
-					// return function() {
-						currentColor = currentColor == "black" ? "ffd333" : "black";
+					var currentColor = "black";
+					currentColor = currentColor == "black" ? "ffd333" : "black";
 	        		d3.select(this).style("fill", currentColor).style('opacity', '1');
-
-					// change table display
-	                // console.log(d)
-	                // var currSelect = Session.get("globalSelector")
-	                // if (Object.keys(currSelect).indexOf("demographic") < 0) {
-	                //     currSelect["demographic"] = {}
-	                // }
-	                // currSelect["demographic"]["metrics.DCM_StudyDate"] = parseInt(d)
-	                // Session.set("globalSelector", currSelect)
-					//
-	                // Meteor.call("get_subject_ids_from_filter", currSelect["demographic"], function(error, result){
-	                //     console.log("result from get subject ids from filter is", result)
-	                //     var ss = Session.get("subjectSelector")
-	                //     ss["subject_id"]["$in"] = result
-	                //     Session.set("subjectSelector", ss)
-	                // })
 					var xkey = "metrics." + xMetric;
 					var ykey = "metrics." + yMetric;
 					var gSelector = Session.get("globalSelector")
@@ -134,113 +116,21 @@ do_scatter = function(xdata, ydata, xMetric, yMetric, dom_id, entry_type) {
 					Session.set("globalSelector", gSelector)
 
 					var filter = get_filter(entry_type)
-					// filter[ykey] = {$eq: ydata[i]}
 					filter[xkey] = {$eq: xdata[i]}
-
-									// console.log('get_subject_ids_from_filter stuff: ')
-									// console.log(filter)
 					Meteor.call("get_subject_ids_from_filter", filter, function(error, result){
-						//console.log("result from get subject ids from filter is", result)
 						var ss = Session.get("subjectSelector")
 						ss["subject_id"]["$in"] = result
 						Session.set("subjectSelector", ss)
 					})
-					// }
-						// d3.select(this).style("fill", currentColor)
-						// d3.select(this).style("fill", "red")
-					// TODO: call function to update table
 				})
 				.on("mouseover", function(d,i) {
-					// d3.select(this).style("fill", "red")
-					return tooltip.style("visibility", "visible").style("color", "red").text(d + ", " + xdata[i]);
+					return tooltip.style("visibility", "visible").style("color", "red").style("cursor", "pointer")
+					.text(pointNames[i] + " (" + d + ", " + xdata[i] + ")");
 				})
 				.on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
 				.on("mouseout", function(){
-					// d3.select(this).style("fill", "black")
-					return tooltip.style("visibility", "hidden");
+					return tooltip.style("visibility", "hidden").style("cursor", "default");
 				})
-
-	// var brush = d3.main.brush()
-	// 		.x(window.d3vis.x)
-	// 		.extent([_.min(xdata), _.max(xdata)])
-	// 		.on("brush", brushed)
-	// 		.on("brushend", brushend)
-	//
-	// var gBrush = window.d3vis.main.append("g")
-	// 		.attr("class", "brush")
-	// 		.call(brush);
-	//
-	// gBrush.selectAll("scatter-dots")
-	// 		.attr("height", window.d3vis.height)
-	// 		.on("click", function(d){
-	// 				d3.event.stopPropagation();
-	// 				console.log("clicked brush dot", d)})
-	//
-	//
-	// function brushed() {
-	// 	var extent0 = brush.extent()
-	// 			//extent1;
-	//
-	// 	//console.log(d3.event.mode)
-	//
-	//
-	//
-	// 	// if dragging, preserve the width of the extent
-	// 	if (d3.event.mode === "move") {
-	// 					//console.log("moving")
-	// 	}
-	//
-	// 	// otherwise, if resizing, round both dates
-	// 	else {
-	// 		extent1 = extent0//.map(d3.time.day.round);
-	// 		//console.log("extending")
-	// 		// if empty when rounded, use floor & ceil instead
-	// 		/*if (extent1[0] >= extent1[1]) {
-	// 			extent1[0] = d3.time.day.floor(extent0[0]);
-	// 			extent1[1] = d3.time.day.ceil(extent0[1]);
-	// 		}*/
-	// 	}
-	//
-	// 	//d3.select(this).call(brush.extent(extent1));
-	// }
-	//
-	// function brushend() {
-	// 	var extent0 = brush.extent()
-	//
-	// 	if (extent0[1] - extent0[0]){
-	//
-	// 			d3.selectAll(".brush").call(brush.clear());
-	// 			var newkey = "metrics."+metric
-	//
-	// 			var gSelector = Session.get("globalSelector")
-	// 			if (Object.keys(gSelector).indexOf(entry_type) < 0 ){
-	// 					gSelector[entry_type] = {}
-	// 			}
-	// 			gSelector[entry_type][newkey] = {$gte: extent0[0], $lte: extent0[1]}
-	// 			Session.set("globalSelector", gSelector)
-	// 			/*
-	// 			var fs_and_subs = {}
-	// 			fs_and_subs[entry_type] = gSelector[entry_type]
-	//
-	// 			var subselect = Session.get("subjectSelector")
-	//
-	// 			if (subselect["subject_id"]["$in"].length){
-	// 					fs_and_subs["subject_id"] = subselect["subject_id"]
-	// 			}*/
-	//
-	// 			var filter = get_filter(entry_type)
-	// 			filter[newkey] = {$gte: extent0[0], $lte: extent0[1]}
-	//
-	// 			Meteor.call("get_subject_ids_from_filter", filter, function(error, result){
-	// 					//console.log("result from get subject ids from filter is", result)
-	// 					var ss = Session.get("subjectSelector")
-	// 					ss["subject_id"]["$in"] = result
-	// 					Session.set("subjectSelector", ss)
-	// 			})
-	// 	}
-	// 		console.log("ended brushing scatter", extent0)
-	// }
-
 }
 
 

@@ -83,8 +83,6 @@ Meteor.methods({
 		        else if (side.includes('rh')) var otherSide = 'lh';
 		        var baseMetric = metric.substring(2);
 		      }
-			  output['side'] = side;
-			  output['otherside'] = otherSide;
 		      // console.log(side);
 		      for (var i = 0; i < all_metrics.length; i++) {
 		        if (all_metrics[i].includes(baseMetric) && all_metrics[i].includes(otherSide)) {
@@ -113,55 +111,19 @@ Meteor.methods({
 				  yMetric = correspondingMetric;
 			  }
 	        }
-			// if (correspondingMetric.includes('Right') || correspondingMetric.includes('rh')) {
-			//   xMetric = correspondingMetric;
-			//   yMetric = metric;
-			// } else if (correspondingMetric.includes('Left') || correspondingMetric.includes('lh')) {
-			//   xMetric = metric;
-			//   yMetric = correspondingMetric;
-			// }
 	        output['xMetric'] = xMetric;
 	        output['yMetric'] = yMetric;
-
-	        // xData = Subjects.aggregate([
-	        //   {$match: filter},
-	        //   {
-			// 	  $group: {
-			// 	  	_id:null, array:{$push:"$_id"}}
-			// 	},
-			// 	{
-			// 		$project: {array:true,_id:false}
-			// 	}
-	        // ]);
 			data = Subjects.aggregate([
 			  {$match: filter},
-			  {$group: {_id: "$metrics", count: {$sum: 1}}}
+			  {$group: {
+				  _id: {
+					  "metrics" : "$metrics",
+					  "name" : "$name"
+				  },
+				  count: {$sum: 1}}
+			  }
 			])
-			output['data'] = data; 
-
-			// xData = Subjects.aggregate([
-			//   {$match: filter},
-			//   {$group: {_id: "$metrics."+xMetric, count: {$sum: 1}}}
-			// ])
-	        // yData = Subjects.aggregate([
-	        //   {$match: filter},
-	        //   {$group: {_id: "$metrics."+yMetric, count: {$sum: 1}}}
-	        // ])
-          // output['test'] = yData;
-	        // xData = _.sortBy(xData, "_id");
-	        // yData = _.sortBy(yData, "_id");
-	        // get values into simple arrays from json objects
-	        // output['yData'] = [];
-	        // output['xData'] = [];
-			// // output['data'] = []
-	        // for (var i = 0; i < yData.length; i++) {
-			//   // pair = [xData[i]._id, yData[i]._id];
-	        //   // output['data'].push(pair);
-			//   output['mets'] = xData[i];
-			//   output['xData'].push(xData[i]._id);
-	        //   output['yData'].push(yData[i]._id);
-	        // }
-			// output['left'] = xData[0]["Left-Lateral-Ventricle"];
+			output['data'] = data;
 	        return output;
   		}
 	  },

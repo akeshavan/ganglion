@@ -83,37 +83,30 @@ function getColumn(matrix, n) {
 render_scatterplot = function(entry_type) {
 	var data, minvalX, maxvalX, minvalY, maxvalY = "";
 	var metric = Session.get("scatter_"+entry_type);
-  console.log(metric)
-  var all_metrics = Session.get(entry_type+"_metrics");
+  	var all_metrics = Session.get(entry_type+"_metrics");
 
 	if (metric == null) {
 		if (all_metrics != null) {
 			Session.set("scatter_"+entry_type, all_metrics[0]);
 		}
 	}
-  // var all_metrics = Session.get(entry_type+"_metrics");
-  // OFFENDING LINE?
-  // if (all_metrics != null) {
-  //   Session.set("scatter_"+entry_type, all_metrics[0]);
-  // }
 
 	if (metric != null) {
 		var filter = get_filter(entry_type);
 		Meteor.call("getScatterData", entry_type, metric, filter, all_metrics, function(error, result) {
-		  var metricPairs = [];
+		  var metricData = [];
 		  for (var i = 0; i < result['data'].length; i++) {
-			 var xMetric = result['data'][i]._id[result['xMetric']];
-			 var yMetric = result['data'][i]._id[result['yMetric']];
-		  	 var pair = [xMetric, yMetric];
-			 metricPairs.push(pair);
+			 var xMetricDataPoint = result['data'][i]._id.metrics[result['xMetric']];
+			 var yMetricDataPoint = result['data'][i]._id.metrics[result['yMetric']];
+			 var pointName = result['data'][i]._id.name;
+		  	 var pointData = [xMetricDataPoint, yMetricDataPoint, pointName];
+			 metricData.push(pointData);
 		  }
-		  console.log(metricPairs);
-	      if (metricPairs.length) {
-			xdata = getColumn(metricPairs, 0);
-			ydata = getColumn(metricPairs, 1);
-			console.log(xdata)
-			console.log(ydata)
-	        do_scatter(xdata, ydata, result['xMetric'], result['yMetric'], "#d3vis_"+entry_type, entry_type)
+	      if (metricData.length) {
+			xdata = getColumn(metricData, 0);
+			ydata = getColumn(metricData, 1);
+			pointNames = getColumn(metricData, 2);
+	        do_scatter(xdata, ydata, pointNames, result['xMetric'], result['yMetric'], "#d3vis_"+entry_type, entry_type)
 	      } else {
 	        console.log('Attempt to clear scatterplot');
 	        // TODO: create scatterplot clear
