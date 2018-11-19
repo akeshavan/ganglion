@@ -106,9 +106,7 @@ do_scatter = function(xdata, ydata, pointNames, xMetric, yMetric, dom_id, entry_
 					if (Object.keys(gSelector).indexOf(entry_type) < 0 ) {
 						gSelector[entry_type] = {}
 					}
-					// $lte and $gte (<= and >=)
-					// console.log('gselect');
-					console.log(gSelector)
+					tooltip.remove()
 					// TODO: should we also make this incorporate ydata too for
 					// complete accuracy? How?
 					// gSelector[entry_type][ykey] = {$eq: ydata[i]}
