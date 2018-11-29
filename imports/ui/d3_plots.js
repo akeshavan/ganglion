@@ -93,7 +93,7 @@ do_scatter = function(xdata, ydata, pointNames, xMetric, yMetric, dom_id, entry_
 	  .enter().append("svg:circle")  // create a new circle for each value
 	      .attr("cy", function (d) { return y(d); } ) // translate y value to a pixel
 	      .attr("cx", function (d,i) { return x(xdata[i]); } ) // translate x value
-	      .attr("r", 10) // radius of circle
+	      .attr("r", 5) // radius of circle
 	      .style("opacity", 0.6) // opacity of circle
 				.attr("class", "scatter-dot-hover")
 				.on("click", function(d, i) {
