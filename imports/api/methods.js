@@ -3,10 +3,9 @@ import {Subjects} from "./module_tables.js"
 Meteor.methods({
 
     getDateHist: function(){
-            //console.log("running the aggregate")
+            console.log("running the aggregate")
             if (Meteor.isServer){
-                var foo = Subjects.aggregate([{$match: {entry_type: "demographic"}},{$group:{_id:"$metrics.DCM_StudyDate", count:{$sum:1}}}])
-                //console.log(foo)
+            var foo = Subjects.aggregate([{$match: {entry_type: "demographic"}},{$group:{_id:"$metrics.DCM_StudyDate", count:{$sum:1}}}])
                 return foo
             }
 
@@ -14,12 +13,12 @@ Meteor.methods({
       },
 
     getHistogramData: function(entry_type, metric, bins, filter){
-          console.log("getting histogram data")
-		  // console.log("filter " + filter);
           if (Meteor.isServer){
           var no_null = filter
           no_null["entry_type"] = entry_type
           var metric_name = "metrics."+metric
+//	  if (metric_name.includes('lh') || metric_name.includes('rh'))
+//		metric_name = metric_name + "_thk";
           //no_null["metrics"] = {}
           //no_null["metrics"]["$ne"] = null
 
@@ -34,8 +33,6 @@ Meteor.methods({
 
           var minval = Subjects.find(no_null, {sort: [[metric_name, "ascending"]], limit: 1}).fetch()[0]["metrics"][metric]
           var maxval = Subjects.find(no_null, {sort: [[metric_name, "descending"]], limit: 1}).fetch()[0]["metrics"][metric]
-                    //var minval = Subjects.findOne({"entry_type": entry_type, no_null}, {sort: minsorter})//.sort(maxsorter).limit(1)
-
 
           var bin_size = (maxval -minval)/(bins+1)
           console.log("the bin size is", bin_size)
@@ -46,6 +43,7 @@ Meteor.methods({
                         {$mod: ["$metrics."+metric, bin_size]}]}}},
                     {$group: {_id: "$lowerBound", count: {$sum: 1}}}])
                 var output = {}
+		output["inbin"] = 'IM HERE'; 
                 output["histogram"] = _.sortBy(foo, "_id")
                 if (minval < 0){
                   output["minval"] = minval*1.05
@@ -54,7 +52,6 @@ Meteor.methods({
                 }
 
                 output["maxval"] = maxval*1.05
-                // console.log("OUT: "+output);
                 return output
           }
           else{
@@ -63,8 +60,8 @@ Meteor.methods({
                 output["minval"] = 0
                 output["maxval"] = 0
                 return output
-          }}
-          //{entry_type: "freesurfer"}
+          }
+	}
       },
 
 	  getScatterData: function(entry_type, metric, filter, all_metrics) {
@@ -83,15 +80,12 @@ Meteor.methods({
 		        else if (side.includes('rh')) var otherSide = 'lh';
 		        var baseMetric = metric.substring(2);
 		      }
-		      // console.log(side);
 		      for (var i = 0; i < all_metrics.length; i++) {
 		        if (all_metrics[i].includes(baseMetric) && all_metrics[i].includes(otherSide)) {
 		          correspondingMetric = all_metrics[i];
 		        }
 		      }
-			  // console.log(filter);
 			  var metric_name = "metrics." + metric;
-			  // console.log(Subjects.find(filter, {sort: [[metric_name, "ascending"]], limit: 1}).fetch()[1]);
 
 	        var xMetric, yMetric;
 	        if (correspondingMetric.includes('Right') || correspondingMetric.includes('rh')) {
@@ -132,9 +126,7 @@ Meteor.methods({
         if (Meteor.isServer){
             var subids = []
             var cursor = Subjects.find(filter,{subject_id:1, _id:0})
-            //console.log("the filter in this method is", filter, cursor.count())
             var foo = cursor.forEach(function(val){subids.push(val.subject_id)})
-            //console.log("the number subjects to filter by are",filter, subids.length)
             return subids
         }
 
@@ -147,6 +139,7 @@ Meteor.methods({
 
     get_metric_names: function(entry_type){
 
+            var settings = _.find(Meteor.settings.public.modules, function(x){return x.entry_type == entry_type})
         if (Meteor.isServer){
             var settings = _.find(Meteor.settings.public.modules, function(x){return x.entry_type == entry_type})
             if (settings.metric_names){
@@ -157,7 +150,6 @@ Meteor.methods({
             if (dude){
                 return Object.keys(dude["metrics"])
             }
-            //console.log("dude is", dude)
 
         }
 
@@ -185,7 +177,6 @@ Meteor.methods({
         }
         else{
         console.log("entry_Type", entry_type)
-        //console.log("myjson", myjson.modules)
         var output =  myjson.modules.find(function(o){return o.entry_type == entry_type})
         console.log("output is", output)
         return output

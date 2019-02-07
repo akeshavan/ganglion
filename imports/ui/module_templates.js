@@ -15,16 +15,13 @@ get_filter = function(entry_type){
 
     if (globalSelector){
         globalKeys = Object.keys(globalSelector)
-        //console.log("global keys are", globalKeys, globalKeys.indexOf(entry_type))
         if (globalKeys.indexOf(entry_type) >= 0){
             var localKeys = Object.keys(globalSelector[entry_type])
-            //console.log("local keys are", localKeys)
             for (i=0;i<localKeys.length;i++){
                 myselect[localKeys[i]] = globalSelector[entry_type][localKeys[i]]
             }//end for
         };//end if
 
-        //console.log("selector for", entry_type, "is", myselect)
 
         // In this part, if another filter has filtered subjects, then filter on the rest
         var subselect = Session.get("subjectSelector")
@@ -32,7 +29,6 @@ get_filter = function(entry_type){
         if (subselect["subject_id"]["$in"].length){
             myselect["subject_id"] = subselect["subject_id"]
         }
-        //console.log("myselect is", myselect)
         return myselect
     }
 }
@@ -55,7 +51,6 @@ render_histogram = function(entry_type){
 
     if (metric != null){
         var filter = get_filter(entry_type)
-        //console.log("filter is", filter)
         Meteor.call("getHistogramData", entry_type, metric, 20, filter, function(error, result){
 	        var data = result["histogram"]
 	        var minval = result["minval"]
@@ -149,16 +144,22 @@ Template.module.helpers({
   }
 })
 
+// on page load, render plots
+//window.onload = function() {
+//	render_histogram(this.entry_type); 
+//	render_scatterplot(this.entry_type); 
+//}
+
 Template.module.events({
  "change #metric-select": function(event, template){
      var metric = $(event.currentTarget).val()
-     console.log("metric: ", metric)
      Session.set("current_"+this.entry_type, metric)
+	render_histogram(this.entry_type); 
  },
  "change #metric-scatter-select": function(event, template){
-	 var metric = $(event.currentTarget).val()
-	 console.log("metric: ", metric)
-	 Session.set("scatter_"+this.entry_type, metric)
+	 var scatter_metric = $(event.currentTarget).val()
+	 Session.set("scatter_"+this.entry_type, scatter_metric)
+	render_scatterplot(this.entry_type); 
  },
  "click .clouder": function(event, template){
    var cmd = Meteor.settings.public.clouder_cmd
@@ -174,6 +175,7 @@ Template.base.rendered = function(){
   this.autorun(function() {
     Meteor.settings.public.modules.forEach(function(self, idx, arr){
       if (self.graph_type == "histogram"){
+	console.log("rendering histogram");
         render_histogram(self.entry_type)
       }
       else if (self.graph_type == "datehist") {

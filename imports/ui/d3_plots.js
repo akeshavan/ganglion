@@ -416,6 +416,8 @@ clear_histogram = function(dom_id){
 }
 
 do_d3_histogram = function (values, minval, maxval, metric, dom_id, entry_type) {
+	console.log("VALUES: "); 
+	console.log(values); 
     // Defer to make sure we manipulate DOM
     _.defer(function () {
         //console.log("HELLO, ATTEMPTING TO DO TABLE!!", fs_tables)
