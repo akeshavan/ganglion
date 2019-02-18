@@ -3,6 +3,43 @@ import "./module_templates.js"
 // do_d3_scatterplot()
 
 do_scatter = function(xdata, ydata, pointNames, xMetric, yMetric, dom_id, entry_type) {
+	   function linearRegression(y,x){
+		var lr = {};
+		var n = y.length;
+		var sum_x = 0;
+		var sum_y = 0;
+		var sum_xy = 0;
+		var sum_xx = 0;
+		var sum_yy = 0;
+
+		for (var i = 0; i < y.length; i++) {
+
+		    sum_x += x[i];
+		    sum_y += y[i];
+		    sum_xy += (x[i]*y[i]);
+		    sum_xx += (x[i]*x[i]);
+		    sum_yy += (y[i]*y[i]);
+		} 
+
+		lr['slope'] = (n * sum_xy - sum_x * sum_y) / (n*sum_xx - sum_x * sum_x);
+		lr['intercept'] = (sum_y - lr.slope * sum_x)/n;
+		lr['r2'] = Math.pow((n*sum_xy - sum_x*sum_y)/Math.sqrt((n*sum_xx-sum_x*sum_x)*(n*sum_yy-sum_y*sum_y)),2);
+
+		return lr;
+	};
+	
+	var dataset = xdata.map(function(v, i) {
+		return [v, ydata[i]]; 
+	}); 
+
+	var yval = ydata.map(function (d) { return parseFloat(d); });
+	var xval = xdata.map(function (d) { return parseFloat(d); });
+
+	var lr = linearRegression(yval,xval);
+	
+	var max_x = d3.max(xdata, function(d) { return d; }); 
+	var max_y = d3.max(ydata, function(d) { return d; }); 
+
 	if (!(d3.select('#d3_scatterplot').empty())) {
 		d3.select('#d3_scatterplot').remove();
 	}
@@ -87,6 +124,15 @@ do_scatter = function(xdata, ydata, pointNames, xMetric, yMetric, dom_id, entry_
     .style("z-index", "10")
     .style("visibility", "hidden")
     .text("a simple tooltip");
+
+	// regression line
+	var line = main.append("svg:line")
+		.attr("x1", x(0))
+		.attr("y1", y(lr.intercept))
+		.attr("x2", x(max_x))
+		.attr("y2", y((max_x * lr.slope) + lr.intercept))
+		.style("stroke", "green") 
+		.style("stroke-width", "2px"); 
 
 	g.selectAll("scatter-dots")
 	  .data(ydata)  // using the values in the ydata array
