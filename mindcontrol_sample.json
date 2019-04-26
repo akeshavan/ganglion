@@ -1,0 +1,44 @@
+ [
+         {
+            "Study Name": "Histogram",
+                 "msid": "subject_1",
+                 "subject_id": "subject_1"
+         },
+         {
+                 "check_masks":
+                 [
+
+                 ],
+                 "entry_type": "freesurfer",
+                 "metrics":
+                {
+                         "Left-Lateral-Ventricle": 5555.3,
+                         "Left-Inf-Lat-Vent": 288.7,
+                         "Left-Cerebellum-White-Matter": 15557.4,
+                         "Left-Cerebellum-Cortex": 51522.2
+		}, 
+		"name": "subject_1", 
+		"subject_id": "subject_1"
+	}, 
+        {
+            "Study Name": "Scatterplot",
+            "msid": "subject_2",
+            "subject_id": "subject_2"
+        },
+        {
+                 "check_masks":
+                 [
+
+                 ],
+                 "entry_type": "freesurfer",
+                 "metrics":
+                 {
+                         "Left-Lateral-Ventricle": 5487.3,
+                         "Left-Inf-Lat-Vent": 288.6,
+                         "Left-Cerebellum-White-Matter": 15556.4,
+                         "Left-Cerebellum-Cortex": 51521.2
+		 }, 
+		"name": "subject_2", 
+		"subject_id": "subject_2"
+	}
+]
